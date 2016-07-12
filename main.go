@@ -1,12 +1,10 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
 	"log"
 	"os"
-	"os/signal"
-	"syscall"
-	"time"
 
 	"github.com/codegangsta/cli"
 	"github.com/coreos/go-semver/semver"
@@ -23,52 +21,47 @@ func main() {
 	app.Action = run
 	app.Flags = []cli.Flag{
 		cli.StringFlag{
-			Name:   "example, e",
-			EnvVar: "MESHBLU_CONNECTOR_INSTALLER_EXAMPLE",
-			Usage:  "Example string flag",
+			Name:   "one-time-password, o",
+			EnvVar: "MESHBLU_CONNECTOR_INSTALLER_ONE_TIME_PASSWORD",
+			Usage:  "The one time password provided by the Connector Factory",
 		},
 	}
 	app.Run(os.Args)
 }
 
-func run(context *cli.Context) {
-	example := getOpts(context)
-
-	sigTerm := make(chan os.Signal)
-	signal.Notify(sigTerm, syscall.SIGTERM)
-
-	sigTermReceived := false
-
-	go func() {
-		<-sigTerm
-		fmt.Println("SIGTERM received, waiting to exit")
-		sigTermReceived = true
-	}()
-
-	for {
-		if sigTermReceived {
-			fmt.Println("I'll be back.")
-			os.Exit(0)
-		}
-
-		debug("meshblu-connector-installer.loop: %v", example)
-		time.Sleep(1 * time.Second)
+func fatalIfError(err error) {
+	if err == nil {
+		return
 	}
+	log.Fatalln("Fatal Error", err.Error())
+}
+
+func run(context *cli.Context) {
+	oneTimePassword := getOpts(context)
+	fmt.Println("oneTimePassword: ", oneTimePassword)
 }
 
 func getOpts(context *cli.Context) string {
-	example := context.String("example")
+	oneTimePassword := context.String("one-time-password")
 
-	if example == "" {
-		cli.ShowAppHelp(context)
+	if oneTimePassword == "" {
+		oneTimePassword = promptForOneTimePassword()
+	}
 
-		if example == "" {
-			color.Red("  Missing required flag --example or MESHBLU_CONNECTOR_INSTALLER_EXAMPLE")
-		}
+	if oneTimePassword == "" {
+		color.Red("meshblu-connector-installer needs a One Time Password to run")
 		os.Exit(1)
 	}
 
-	return example
+	return oneTimePassword
+}
+
+func promptForOneTimePassword() string {
+	reader := bufio.NewReader(os.Stdin)
+	fmt.Print("One Time Password: ")
+	text, err := reader.ReadString('\n')
+	fatalIfError(err)
+	return text
 }
 
 func version() string {
