@@ -24,6 +24,14 @@
 			"notests": true
 		},
 		{
+			"importpath": "github.com/golang/protobuf/proto",
+			"repository": "https://github.com/golang/protobuf",
+			"revision": "874264fbbb43f4d91e999fecb4b40143ed611400",
+			"branch": "master",
+			"path": "/proto",
+			"notests": true
+		},
+		{
 			"importpath": "github.com/mattn/go-colorable",
 			"repository": "https://github.com/mattn/go-colorable",
 			"revision": "9cbef7c35391cca05f15f8181dc0b18bc9736dbb",
@@ -38,10 +46,31 @@
 			"notests": true
 		},
 		{
+			"importpath": "github.com/onsi/ginkgo",
+			"repository": "https://github.com/onsi/ginkgo",
+			"revision": "16c38793d41b07a5f9ae77d573af7836a994bf27",
+			"branch": "master",
+			"notests": true
+		},
+		{
+			"importpath": "github.com/onsi/gomega",
+			"repository": "https://github.com/onsi/gomega",
+			"revision": "fcb0f1276bbd7cf097f5a7fd86cc68b50da9376f",
+			"branch": "master",
+			"notests": true
+		},
+		{
 			"importpath": "github.com/visionmedia/go-debug",
 			"repository": "https://github.com/visionmedia/go-debug",
 			"revision": "ff4a55a20a86994118644bbddc6a216da193cc13",
 			"branch": "master",
+			"notests": true
+		},
+		{
+			"importpath": "gopkg.in/yaml.v2",
+			"repository": "https://gopkg.in/yaml.v2",
+			"revision": "a83829b6f1293c91addabc89d0571c246397bbf4",
+			"branch": "v2",
 			"notests": true
 		}
 	]
