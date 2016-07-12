@@ -12,7 +12,7 @@ build_on_local() {
   local goos="$1"
   local goarch="$2"
 
-  env GOOS=linux go build -a -tags netgo -installsuffix cgo -ldflags '-w' -o "${BUILD_DIR}/${APP_NAME}-$goarch" .
+  env GOOS="$goos" GOARCH="$goarch" go build -a -tags netgo -installsuffix cgo -ldflags '-w' -o "${BUILD_DIR}/${APP_NAME}-${goos}-${goarch}" .
 }
 
 build_osx_on_local() {
