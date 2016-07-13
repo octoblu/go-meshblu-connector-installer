@@ -68,9 +68,28 @@ func GetOTPInformation(oneTimePassword string) (*OTPInformation, error) {
 // the connector type and Meshblu credentials
 func (otp *httpOTP) GetInformation() (*OTPInformation, error) {
 	retrievalURL := *otp.baseURL
-	retrievalURL.Path = fmt.Sprintf("/retrieve/%v", otp.oneTimePassword)
+	retrievalURL.Path = fmt.Sprintf("/v2/passwords/%v", otp.oneTimePassword)
 
-	response, err := http.Get(retrievalURL.String())
+	return doRequest("GET", &retrievalURL)
+}
+
+// Expire removes this one time password, making it unavailable for use.
+func (otp *httpOTP) Expire() error {
+	expireURL := *otp.baseURL
+	expireURL.Path = fmt.Sprintf("/v2/passwords/%v", otp.oneTimePassword)
+
+	_, err := doRequest("DELETE", &expireURL)
+	return err
+}
+
+func doRequest(method string, requestURL *url.URL) (*OTPInformation, error) {
+	request, err := http.NewRequest(method, requestURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	client := &http.Client{}
+	response, err := client.Do(request)
 	if err != nil {
 		return nil, err
 	}
@@ -85,27 +104,6 @@ func (otp *httpOTP) GetInformation() (*OTPInformation, error) {
 	}
 
 	return parseRetrievalResponse(body)
-}
-
-func (otp *httpOTP) Expire() error {
-	retrievalURL := *otp.baseURL
-	retrievalURL.Path = fmt.Sprintf("/expire/%v", otp.oneTimePassword)
-
-	response, err := http.Get(retrievalURL.String())
-	if err != nil {
-		return err
-	}
-
-	body, err := ioutil.ReadAll(response.Body)
-	if err != nil {
-		return err
-	}
-
-	if response.StatusCode != 200 {
-		return fmt.Errorf("Received non 200: %v, %v", response.StatusCode, string(body))
-	}
-
-	return nil
 }
 
 func parseRetrievalResponse(body []byte) (*OTPInformation, error) {

@@ -85,10 +85,10 @@ var _ = Describe("onetimepassword", func() {
 					sut.GetInformation()
 				})
 
-				It("Should call GET /retrieve/otp on the server", func() {
+				It("Should call GET /v2/passwords/otp on the server", func() {
 					Expect(lastRequest).NotTo(BeNil())
 					Expect(lastRequest.Method).To(Equal("GET"))
-					Expect(lastRequest.URL.Path).To(Equal("/retrieve/otp"))
+					Expect(lastRequest.URL.Path).To(Equal("/v2/passwords/otp"))
 				})
 			})
 
@@ -178,10 +178,10 @@ var _ = Describe("onetimepassword", func() {
 					sut.Expire()
 				})
 
-				It("Should call GET /expire/otp on the server", func() {
+				It("Should call GET /v2/passwords/otp on the server", func() {
 					Expect(lastRequest).NotTo(BeNil())
-					Expect(lastRequest.Method).To(Equal("GET"))
-					Expect(lastRequest.URL.Path).To(Equal("/expire/otp"))
+					Expect(lastRequest.Method).To(Equal("DELETE"))
+					Expect(lastRequest.URL.Path).To(Equal("/v2/passwords/otp"))
 				})
 			})
 
