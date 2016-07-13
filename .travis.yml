@@ -2,5 +2,5 @@ language: go
 go:
 - '1.6'
 install:
-  - cd vendor/github.com/onsi/ginkgo/ginkgo && go install && cd ../../../..
+  - pushd vendor/github.com/onsi/ginkgo/ginkgo && go install && popd
 script: ginkgo -r
