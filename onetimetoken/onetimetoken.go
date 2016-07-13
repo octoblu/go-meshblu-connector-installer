@@ -58,17 +58,22 @@ func (otp *httpOTP) ExchangeForInformation() (*OTPInformation, error) {
 		return nil, err
 	}
 
-	return parseRetrievalResponse(response)
-}
-
-func parseRetrievalResponse(response *http.Response) (*OTPInformation, error) {
-	info := OTPInformation{}
 	body, err := ioutil.ReadAll(response.Body)
 	if err != nil {
 		return nil, err
 	}
 
-	err = json.Unmarshal(body, &info)
+	if response.StatusCode != 200 {
+		return nil, fmt.Errorf("Received non 200: %v, %v", response.StatusCode, body)
+	}
+
+	return parseRetrievalResponse(body)
+}
+
+func parseRetrievalResponse(body []byte) (*OTPInformation, error) {
+	info := OTPInformation{}
+
+	err := json.Unmarshal(body, &info)
 	if err != nil {
 		return nil, err
 	}

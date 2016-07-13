@@ -109,7 +109,7 @@ var _ = Describe("onetimetoken", func() {
 				})
 			})
 
-			Describe("when the server yields an invalid response", func() {
+			Describe("when the server yields json that doesn't match the schema", func() {
 				var info *onetimetoken.OTPInformation
 
 				BeforeEach(func() {
@@ -124,6 +124,25 @@ var _ = Describe("onetimetoken", func() {
 
 				It("Should return an error", func() {
 					Expect(err).NotTo(BeNil())
+				})
+			})
+
+			Describe("when the server yields a 404", func() {
+				var info *onetimetoken.OTPInformation
+
+				BeforeEach(func() {
+					nextResponseStatus = 404
+					nextResponseBody = "Not Found"
+					info, err = sut.ExchangeForInformation()
+				})
+
+				It("Should return no info", func() {
+					Expect(info).To(BeNil())
+				})
+
+				It("Should return an error", func() {
+					Expect(err).NotTo(BeNil())
+					Expect(err.Error()).To(ContainSubstring("Received non 200: 404"))
 				})
 			})
 
