@@ -1,0 +1,6 @@
+language: go
+go:
+- '1.6'
+install:
+  - cd vendor/github.com/onsi/ginkgo && go install
+script: ginkgo -r

@@ -9,6 +9,7 @@ import (
 	"github.com/codegangsta/cli"
 	"github.com/coreos/go-semver/semver"
 	"github.com/fatih/color"
+	"github.com/octoblu/go-meshblu-connector-installer/onetimepassword"
 	De "github.com/visionmedia/go-debug"
 )
 
@@ -38,7 +39,11 @@ func fatalIfError(err error) {
 
 func run(context *cli.Context) {
 	oneTimePassword := getOpts(context)
-	fmt.Println("oneTimePassword: ", oneTimePassword)
+	fmt.Println("Using One Time Password: ", oneTimePassword)
+
+	connectorInfo, err := onetimepassword.GetOTPInformation(oneTimePassword)
+	fatalIfError(err)
+	fmt.Println("Got info: ", connectorInfo)
 }
 
 func getOpts(context *cli.Context) string {
