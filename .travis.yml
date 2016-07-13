@@ -1,5 +1,5 @@
 language: go
 go:
 - '1.6'
-install: echo "Dependencies are vendorized, no need to install anything"
+install: true
 script: go test $(go list ./... | grep -v /vendor/)
