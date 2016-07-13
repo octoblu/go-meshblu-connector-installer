@@ -11,12 +11,14 @@ import (
 )
 
 var _ = Describe("onetimepassword", func() {
-	var sut onetimepassword.OTP
-	var err error
-	var server *httptest.Server
-	var lastRequest *http.Request
-	var nextResponseBody string
-	var nextResponseStatus int
+	var (
+		sut                onetimepassword.OTP
+		err                error
+		server             *httptest.Server
+		lastRequest        *http.Request
+		nextResponseBody   string
+		nextResponseStatus int
+	)
 
 	BeforeEach(func() {
 		server = httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {

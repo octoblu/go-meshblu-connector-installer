@@ -1,6 +1,6 @@
 language: go
 go:
 - '1.6'
-install:
-  - pushd vendor/github.com/onsi/ginkgo/ginkgo && go install && popd
-script: ginkgo -r
+# install:
+#   - pushd vendor/github.com/onsi/ginkgo/ginkgo && go install && popd
+script: go test github.com/octoblu/go-meshblu-connector-installer/onetimepassword
