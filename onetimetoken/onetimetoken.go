@@ -2,6 +2,7 @@ package onetimetoken
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 	"net/url"
 )
@@ -12,7 +13,8 @@ type OTP interface {
 }
 
 type httpOTP struct {
-	oneTimePassword, urlStr string
+	oneTimePassword string
+	baseURL         *url.URL
 }
 
 // OTPInformation describes the information that a One Time Password can be exchanged for
@@ -22,20 +24,28 @@ type OTPInformation struct {
 
 // New constructs a new OTP instance
 func New(oneTimePassword string) OTP {
-	urlStr := "https://meshblu-otp.octoblu.com/"
-
-	return &httpOTP{oneTimePassword, urlStr}
+	otp, err := NewWithURLOverride(oneTimePassword, "https://meshblu-otp.octoblu.com/")
+	if err != nil {
+		log.Fatalln("This URL should never be invalid, but it is: ", err.Error())
+	}
+	return otp
 }
 
 // NewWithURLOverride constructs a new OTP instance with a specific URL
-func NewWithURLOverride(oneTimePassword, urlStr string) OTP {
-	return &httpOTP{oneTimePassword, urlStr}
+func NewWithURLOverride(oneTimePassword, urlStr string) (OTP, error) {
+	baseURL, err := url.ParseRequestURI(urlStr)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &httpOTP{oneTimePassword, baseURL}, nil
 }
 
 // ExchangeForInformation exchanges a one time token for information, including
 // the connector type and Meshblu credentials
 func (otp *httpOTP) ExchangeForInformation() OTPInformation {
-	retrievalURL, _ := url.Parse(otp.urlStr)
+	retrievalURL := *otp.baseURL
 	retrievalURL.Path = fmt.Sprintf("/retrieve/%v", otp.oneTimePassword)
 
 	response, _ := http.Get(retrievalURL.String())
