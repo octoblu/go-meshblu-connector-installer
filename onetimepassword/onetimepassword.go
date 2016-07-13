@@ -1,4 +1,4 @@
-package onetimetoken
+package onetimepassword
 
 import (
 	"encoding/json"
@@ -11,9 +11,9 @@ import (
 
 // OTP is an interface for retrieving information about One Time Tokens and to expire them
 type OTP interface {
-	// ExchangeForInformation exchanges a one time token for information, including
+	// GetInformation exchanges a one time token for information, including
 	// the connector type and Meshblu credentials
-	ExchangeForInformation() (*OTPInformation, error)
+	GetInformation() (*OTPInformation, error)
 
 	// Expire removes this one time password, making it unavailable for use.
 	Expire() error
@@ -58,9 +58,15 @@ func NewWithURLOverride(oneTimePassword, urlStr string) (OTP, error) {
 	return &httpOTP{oneTimePassword, baseURL}, nil
 }
 
-// ExchangeForInformation exchanges a one time token for information, including
+// GetOTPInformation is a helper method to retrieve information in one call
+func GetOTPInformation(oneTimePassword string) (*OTPInformation, error) {
+	otp := New(oneTimePassword)
+	return otp.GetInformation()
+}
+
+// GetInformation exchanges a one time token for information, including
 // the connector type and Meshblu credentials
-func (otp *httpOTP) ExchangeForInformation() (*OTPInformation, error) {
+func (otp *httpOTP) GetInformation() (*OTPInformation, error) {
 	retrievalURL := *otp.baseURL
 	retrievalURL.Path = fmt.Sprintf("/retrieve/%v", otp.oneTimePassword)
 

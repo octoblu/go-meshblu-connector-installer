@@ -1,4 +1,4 @@
-package onetimetoken_test
+package onetimepassword_test
 
 import (
 	. "github.com/onsi/ginkgo"
@@ -7,7 +7,7 @@ import (
 	"testing"
 )
 
-func TestOnetimetoken(t *testing.T) {
+func TestOnetimepassword(t *testing.T) {
 	RegisterFailHandler(Fail)
-	RunSpecs(t, "Onetimetoken Suite")
+	RunSpecs(t, "Onetimepassword Suite")
 }

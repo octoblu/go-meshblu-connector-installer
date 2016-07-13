@@ -1,17 +1,17 @@
-package onetimetoken_test
+package onetimepassword_test
 
 import (
 	"net/http"
 	"net/http/httptest"
 
-	"github.com/octoblu/go-meshblu-connector-installer/onetimetoken"
+	"github.com/octoblu/go-meshblu-connector-installer/onetimepassword"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 )
 
-var _ = Describe("onetimetoken", func() {
-	var sut onetimetoken.OTP
+var _ = Describe("onetimepassword", func() {
+	var sut onetimepassword.OTP
 	var err error
 	var server *httptest.Server
 	var lastRequest *http.Request
@@ -34,7 +34,7 @@ var _ = Describe("onetimetoken", func() {
 
 	Describe("->New", func() {
 		BeforeEach(func() {
-			sut = onetimetoken.New("otp")
+			sut = onetimepassword.New("otp")
 		})
 
 		It("should return an instance", func() {
@@ -45,7 +45,7 @@ var _ = Describe("onetimetoken", func() {
 	Describe("->NewWithURLOverride", func() {
 		Describe("With a valid url", func() {
 			BeforeEach(func() {
-				sut, err = onetimetoken.NewWithURLOverride("otp", server.URL)
+				sut, err = onetimepassword.NewWithURLOverride("otp", server.URL)
 			})
 
 			It("should produce an instance", func() {
@@ -59,7 +59,7 @@ var _ = Describe("onetimetoken", func() {
 
 		Describe("With an invalid url", func() {
 			BeforeEach(func() {
-				sut, err = onetimetoken.NewWithURLOverride("otp", "")
+				sut, err = onetimepassword.NewWithURLOverride("otp", "")
 			})
 
 			It("should not produce an instance", func() {
@@ -74,13 +74,13 @@ var _ = Describe("onetimetoken", func() {
 
 	Describe("with an instance", func() {
 		BeforeEach(func() {
-			sut, _ = onetimetoken.NewWithURLOverride("otp", server.URL)
+			sut, _ = onetimepassword.NewWithURLOverride("otp", server.URL)
 		})
 
-		Describe("sut.ExchangeForInformation", func() {
+		Describe("sut.GetInformation", func() {
 			Describe("when called", func() {
 				BeforeEach(func() {
-					sut.ExchangeForInformation()
+					sut.GetInformation()
 				})
 
 				It("Should call GET /retrieve/otp on the server", func() {
@@ -91,13 +91,13 @@ var _ = Describe("onetimetoken", func() {
 			})
 
 			Describe("when the server is unavailable", func() {
-				var info *onetimetoken.OTPInformation
+				var info *onetimepassword.OTPInformation
 
 				BeforeEach(func() {
 					server.Close()
 					nextResponseStatus = 200
 					nextResponseBody = `{"uuid":"some-uuid","token":"some-token"}`
-					info, err = sut.ExchangeForInformation()
+					info, err = sut.GetInformation()
 				})
 
 				It("Should return no info", func() {
@@ -110,12 +110,12 @@ var _ = Describe("onetimetoken", func() {
 			})
 
 			Describe("when the server yields json that doesn't match the schema", func() {
-				var info *onetimetoken.OTPInformation
+				var info *onetimepassword.OTPInformation
 
 				BeforeEach(func() {
 					nextResponseStatus = 200
 					nextResponseBody = `{"uuid":123}`
-					info, err = sut.ExchangeForInformation()
+					info, err = sut.GetInformation()
 				})
 
 				It("Should return no info", func() {
@@ -128,12 +128,12 @@ var _ = Describe("onetimetoken", func() {
 			})
 
 			Describe("when the server yields a 404", func() {
-				var info *onetimetoken.OTPInformation
+				var info *onetimepassword.OTPInformation
 
 				BeforeEach(func() {
 					nextResponseStatus = 404
 					nextResponseBody = "Not Found"
-					info, err = sut.ExchangeForInformation()
+					info, err = sut.GetInformation()
 				})
 
 				It("Should return no info", func() {
@@ -148,12 +148,12 @@ var _ = Describe("onetimetoken", func() {
 			})
 
 			Describe("when the server yields a valid response", func() {
-				var info *onetimetoken.OTPInformation
+				var info *onetimepassword.OTPInformation
 
 				BeforeEach(func() {
 					nextResponseStatus = 200
 					nextResponseBody = `{"uuid":"some-uuid","token":"some-token"}`
-					info, err = sut.ExchangeForInformation()
+					info, err = sut.GetInformation()
 				})
 
 				It("Return the uuid", func() {
@@ -211,7 +211,7 @@ var _ = Describe("onetimetoken", func() {
 			})
 
 			Describe("when the server yields a valid response", func() {
-				var info *onetimetoken.OTPInformation
+				var info *onetimepassword.OTPInformation
 
 				BeforeEach(func() {
 					nextResponseStatus = 200
@@ -227,7 +227,7 @@ var _ = Describe("onetimetoken", func() {
 							"tag": "v6.0.0"
 						}
 					}`
-					info, err = sut.ExchangeForInformation()
+					info, err = sut.GetInformation()
 				})
 
 				It("Return the uuid", func() {
