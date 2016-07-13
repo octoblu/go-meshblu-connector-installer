@@ -1,7 +1,9 @@
 package onetimetoken
 
 import (
+	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"net/http"
 	"net/url"
@@ -9,7 +11,9 @@ import (
 
 // OTP is an interface for retrieving information about One Time Tokens and to expire them
 type OTP interface {
-	ExchangeForInformation() OTPInformation
+	// ExchangeForInformation exchanges a one time token for information, including
+	// the connector type and Meshblu credentials
+	ExchangeForInformation() (*OTPInformation, error)
 }
 
 type httpOTP struct {
@@ -19,7 +23,8 @@ type httpOTP struct {
 
 // OTPInformation describes the information that a One Time Password can be exchanged for
 type OTPInformation struct {
-	UUID, Token string
+	UUID  string `json:"uuid"`
+	Token string `json:"token"`
 }
 
 // New constructs a new OTP instance
@@ -44,16 +49,31 @@ func NewWithURLOverride(oneTimePassword, urlStr string) (OTP, error) {
 
 // ExchangeForInformation exchanges a one time token for information, including
 // the connector type and Meshblu credentials
-func (otp *httpOTP) ExchangeForInformation() OTPInformation {
+func (otp *httpOTP) ExchangeForInformation() (*OTPInformation, error) {
 	retrievalURL := *otp.baseURL
 	retrievalURL.Path = fmt.Sprintf("/retrieve/%v", otp.oneTimePassword)
 
-	response, _ := http.Get(retrievalURL.String())
+	response, err := http.Get(retrievalURL.String())
+	if err != nil {
+		return nil, err
+	}
+
 	return parseRetrievalResponse(response)
 }
 
-func parseRetrievalResponse(response *http.Response) OTPInformation {
-	return OTPInformation{}
+func parseRetrievalResponse(response *http.Response) (*OTPInformation, error) {
+	info := OTPInformation{}
+	body, err := ioutil.ReadAll(response.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	err = json.Unmarshal(body, &info)
+	if err != nil {
+		return nil, err
+	}
+
+	return &info, nil
 }
 
 // uuid: 'c7097087-bed4-4272-8692-3b07277ec281',

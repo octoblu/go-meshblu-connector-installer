@@ -90,21 +90,62 @@ var _ = Describe("onetimetoken", func() {
 				})
 			})
 
-			Describe("when the server yields a response", func() {
-				var info onetimetoken.OTPInformation
+			Describe("when the server is unavailable", func() {
+				var info *onetimetoken.OTPInformation
+
+				BeforeEach(func() {
+					server.Close()
+					nextResponseStatus = 200
+					nextResponseBody = `{"uuid":"some-uuid","token":"some-token"}`
+					info, err = sut.ExchangeForInformation()
+				})
+
+				It("Should return no info", func() {
+					Expect(info).To(BeNil())
+				})
+
+				It("Should return an error", func() {
+					Expect(err).NotTo(BeNil())
+				})
+			})
+
+			Describe("when the server yields an invalid response", func() {
+				var info *onetimetoken.OTPInformation
+
+				BeforeEach(func() {
+					nextResponseStatus = 200
+					nextResponseBody = `{"uuid":123}`
+					info, err = sut.ExchangeForInformation()
+				})
+
+				It("Should return no info", func() {
+					Expect(info).To(BeNil())
+				})
+
+				It("Should return an error", func() {
+					Expect(err).NotTo(BeNil())
+				})
+			})
+
+			Describe("when the server yields a valid response", func() {
+				var info *onetimetoken.OTPInformation
 
 				BeforeEach(func() {
 					nextResponseStatus = 200
 					nextResponseBody = `{"uuid":"some-uuid","token":"some-token"}`
-					info = sut.ExchangeForInformation()
+					info, err = sut.ExchangeForInformation()
 				})
 
-				XIt("Return the uuid", func() {
+				It("Return the uuid", func() {
 					Expect(info.UUID).To(Equal("some-uuid"))
 				})
 
-				XIt("Return the token", func() {
+				It("Return the token", func() {
 					Expect(info.Token).To(Equal("some-token"))
+				})
+
+				It("Should not return an error", func() {
+					Expect(err).To(BeNil())
 				})
 			})
 		})
