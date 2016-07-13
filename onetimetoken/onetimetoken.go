@@ -26,8 +26,16 @@ type httpOTP struct {
 
 // OTPInformation describes the information that a One Time Password can be exchanged for
 type OTPInformation struct {
-	UUID  string `json:"uuid"`
-	Token string `json:"token"`
+	UUID     string `json:"uuid"`
+	Token    string `json:"token"`
+	Metadata struct {
+		GithubSlug                string `json:"githubSlug"`
+		ConnectorAssemblerVersion string `json:"connectorAssemblerVersion"`
+		DependencyManagerVersion  string `json:"dependencyManagerVersion"`
+		IgnitionVersion           string `json:"ignitionVersion"`
+		Connector                 string `json:"connector"`
+		Tag                       string `json:"tag"`
+	} `json:"metadata"`
 }
 
 // New constructs a new OTP instance

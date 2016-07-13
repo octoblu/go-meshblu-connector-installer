@@ -215,7 +215,18 @@ var _ = Describe("onetimetoken", func() {
 
 				BeforeEach(func() {
 					nextResponseStatus = 200
-					nextResponseBody = `{"uuid":"some-uuid","token":"some-token"}`
+					nextResponseBody = `{
+						"uuid":  "some-uuid",
+						"token": "some-token",
+						"metadata": {
+						  "githubSlug": "octoblu/meshblu-connector-say-hello",
+							"connectorAssemblerVersion": "v13.0.0",
+							"dependencyManagerVersion": "v3.0.2",
+							"ignitionVersion": "v6.0.0",
+							"connector": "say-hello",
+							"tag": "v6.0.0"
+						}
+					}`
 					info, err = sut.ExchangeForInformation()
 				})
 
@@ -225,6 +236,15 @@ var _ = Describe("onetimetoken", func() {
 
 				It("Return the token", func() {
 					Expect(info.Token).To(Equal("some-token"))
+				})
+
+				It("Return the Metadata", func() {
+					Expect(info.Metadata.GithubSlug).To(Equal("octoblu/meshblu-connector-say-hello"))
+					Expect(info.Metadata.ConnectorAssemblerVersion).To(Equal("v13.0.0"))
+					Expect(info.Metadata.DependencyManagerVersion).To(Equal("v3.0.2"))
+					Expect(info.Metadata.IgnitionVersion).To(Equal("v6.0.0"))
+					Expect(info.Metadata.Connector).To(Equal("say-hello"))
+					Expect(info.Metadata.Tag).To(Equal("v6.0.0"))
 				})
 
 				It("Should not return an error", func() {
