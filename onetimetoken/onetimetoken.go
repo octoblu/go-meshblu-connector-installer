@@ -14,6 +14,9 @@ type OTP interface {
 	// ExchangeForInformation exchanges a one time token for information, including
 	// the connector type and Meshblu credentials
 	ExchangeForInformation() (*OTPInformation, error)
+
+	// Expire removes this one time password, making it unavailable for use.
+	Expire() error
 }
 
 type httpOTP struct {
@@ -64,10 +67,31 @@ func (otp *httpOTP) ExchangeForInformation() (*OTPInformation, error) {
 	}
 
 	if response.StatusCode != 200 {
-		return nil, fmt.Errorf("Received non 200: %v, %v", response.StatusCode, body)
+		return nil, fmt.Errorf("Received non 200: %v, %v", response.StatusCode, string(body))
 	}
 
 	return parseRetrievalResponse(body)
+}
+
+func (otp *httpOTP) Expire() error {
+	retrievalURL := *otp.baseURL
+	retrievalURL.Path = fmt.Sprintf("/expire/%v", otp.oneTimePassword)
+
+	response, err := http.Get(retrievalURL.String())
+	if err != nil {
+		return err
+	}
+
+	body, err := ioutil.ReadAll(response.Body)
+	if err != nil {
+		return err
+	}
+
+	if response.StatusCode != 200 {
+		return fmt.Errorf("Received non 200: %v, %v", response.StatusCode, string(body))
+	}
+
+	return nil
 }
 
 func parseRetrievalResponse(body []byte) (*OTPInformation, error) {

@@ -143,6 +143,70 @@ var _ = Describe("onetimetoken", func() {
 				It("Should return an error", func() {
 					Expect(err).NotTo(BeNil())
 					Expect(err.Error()).To(ContainSubstring("Received non 200: 404"))
+					Expect(err.Error()).To(ContainSubstring("Not Found"))
+				})
+			})
+
+			Describe("when the server yields a valid response", func() {
+				var info *onetimetoken.OTPInformation
+
+				BeforeEach(func() {
+					nextResponseStatus = 200
+					nextResponseBody = `{"uuid":"some-uuid","token":"some-token"}`
+					info, err = sut.ExchangeForInformation()
+				})
+
+				It("Return the uuid", func() {
+					Expect(info.UUID).To(Equal("some-uuid"))
+				})
+
+				It("Return the token", func() {
+					Expect(info.Token).To(Equal("some-token"))
+				})
+
+				It("Should not return an error", func() {
+					Expect(err).To(BeNil())
+				})
+			})
+		})
+
+		Describe("sut.Expire", func() {
+			Describe("when called", func() {
+				BeforeEach(func() {
+					sut.Expire()
+				})
+
+				It("Should call GET /expire/otp on the server", func() {
+					Expect(lastRequest).NotTo(BeNil())
+					Expect(lastRequest.Method).To(Equal("GET"))
+					Expect(lastRequest.URL.Path).To(Equal("/expire/otp"))
+				})
+			})
+
+			Describe("when the server is unavailable", func() {
+				BeforeEach(func() {
+					server.Close()
+					nextResponseStatus = 200
+					nextResponseBody = `{"uuid":"some-uuid","token":"some-token"}`
+					err = sut.Expire()
+				})
+
+				It("Should return an error", func() {
+					Expect(err).NotTo(BeNil())
+				})
+			})
+
+			Describe("when the server yields a 404", func() {
+				BeforeEach(func() {
+					nextResponseStatus = 404
+					nextResponseBody = "Not Found"
+					err = sut.Expire()
+				})
+
+				It("Should return an error", func() {
+					Expect(err).NotTo(BeNil())
+					Expect(err.Error()).To(ContainSubstring("Received non 200: 404"))
+					Expect(err.Error()).To(ContainSubstring("Not Found"))
 				})
 			})
 
