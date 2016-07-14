@@ -44,6 +44,9 @@ func run(context *cli.Context) {
 	connectorInfo, err := onetimepassword.GetOTPInformation(oneTimePassword)
 	fatalIfError(err)
 	fmt.Println("Got info: ", connectorInfo)
+
+	err := dependencies.Install()
+	fatalIfError(err)
 }
 
 func getOpts(context *cli.Context) string {
