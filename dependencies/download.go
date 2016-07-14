@@ -13,13 +13,28 @@ func Download() {
 
 // DownloadWithURLAndRuntime can be used to override the URL and runtime parameters
 // when downloading. You probably want the much easier Download function instead
-func DownloadWithURLAndRuntime(version, urlStr string, runtime Runtime) error {
+func DownloadWithURLAndRuntime(assemblerVersion, dependencyManagerVersion, urlStr string, runtime Runtime) error {
+	var err error
+
+	err = download(urlStr, fmt.Sprintf("/octoblu/go-meshblu-connector-assembler/releases/download/%v/meshblu-connector-assembler-%v-%v", assemblerVersion, runtime.GOOS, runtime.GOARCH))
+	if err != nil {
+		return err
+	}
+	err = download(urlStr, fmt.Sprintf("/octoblu/go-meshblu-connector-dependency-manager/releases/download/%v/meshblu-connector-dependency-manager-%v-%v", dependencyManagerVersion, runtime.GOOS, runtime.GOARCH))
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func download(urlStr, path string) error {
 	requestURL, err := url.ParseRequestURI(urlStr)
 	if err != nil {
 		return err
 	}
 
-	requestURL.Path = fmt.Sprintf("/octoblu/go-fu/releases/download/%v/fu-%v-%v", version, runtime.GOOS, runtime.GOARCH)
+	requestURL.Path = path
 	_, err = http.Get(requestURL.String())
 	return err
 }

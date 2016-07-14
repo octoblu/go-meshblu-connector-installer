@@ -54,7 +54,7 @@ var _ = Describe("Download", func() {
 
 		BeforeEach(func() {
 			// https: //github.com/octoblu/go-${projectName}/releases/download/${tag}/${projectName}-${platform}
-			err = dependencies.DownloadWithURLAndRuntime("v1.2.0", "", dependencies.Runtime{})
+			err = dependencies.DownloadWithURLAndRuntime("v1.2.0", "v3.2.1", "", dependencies.Runtime{})
 		})
 
 		It("should return an error", func() {
@@ -62,17 +62,25 @@ var _ = Describe("Download", func() {
 		})
 	})
 
-	Describe("when called with an assembler version", func() {
-		var transaction *Transaction
+	Describe("when called with an assembler and dependency manager version", func() {
+		var assemblerTransaction *Transaction
+		var dependencyManagerTransaction *Transaction
 
 		BeforeEach(func() {
-			transaction = &Transaction{ResponseStatus: 200, ResponseBody: ""}
-			transactions["GET /octoblu/go-fu/releases/download/v1.2.0/fu-darwin-amd64"] = transaction
-			dependencies.DownloadWithURLAndRuntime("v1.2.0", server.URL, dependencies.Runtime{GOOS: "darwin", GOARCH: "amd64"})
+			assemblerTransaction = &Transaction{ResponseStatus: 200, ResponseBody: ""}
+			transactions["GET /octoblu/go-meshblu-connector-assembler/releases/download/v1.2.0/meshblu-connector-assembler-darwin-amd64"] = assemblerTransaction
+			dependencyManagerTransaction = &Transaction{ResponseStatus: 200, ResponseBody: ""}
+			transactions["GET /octoblu/go-meshblu-connector-dependency-manager/releases/download/v3.2.1/meshblu-connector-dependency-manager-darwin-amd64"] = dependencyManagerTransaction
+
+			dependencies.DownloadWithURLAndRuntime("v1.2.0", "v3.2.1", server.URL, dependencies.Runtime{GOOS: "darwin", GOARCH: "amd64"})
 		})
 
 		It("should pull down the correct assembler", func() {
-			Expect(transaction.Request).NotTo(BeNil())
+			Expect(assemblerTransaction.Request).NotTo(BeNil())
+		})
+
+		It("should pull down the correct dependency manager", func() {
+			Expect(dependencyManagerTransaction.Request).NotTo(BeNil())
 		})
 	})
 })
