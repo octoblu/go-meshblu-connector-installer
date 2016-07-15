@@ -53,6 +53,36 @@
 			"notests": true
 		},
 		{
+			"importpath": "github.com/octoblu/go-meshblu-connector-assembler/downloader",
+			"repository": "https://github.com/octoblu/go-meshblu-connector-assembler",
+			"revision": "10a2bc6058ff819055fdf8278b1972ba4878ec98",
+			"branch": "master",
+			"path": "/downloader",
+			"notests": true
+		},
+		{
+			"importpath": "github.com/octoblu/go-meshblu-connector-assembler/extractor",
+			"repository": "https://github.com/octoblu/go-meshblu-connector-assembler",
+			"revision": "10a2bc6058ff819055fdf8278b1972ba4878ec98",
+			"branch": "master",
+			"path": "/extractor",
+			"notests": true
+		},
+		{
+			"importpath": "github.com/octoblu/go-meshblu-connector-dependency-manager",
+			"repository": "https://github.com/octoblu/go-meshblu-connector-dependency-manager",
+			"revision": "1f58f425ccc8c34e5161df99d8dd0621e84faad3",
+			"branch": "master",
+			"notests": true
+		},
+		{
+			"importpath": "github.com/octoblu/unzipit",
+			"repository": "https://github.com/octoblu/unzipit",
+			"revision": "da0d7368be9ace550e15ad554aaf69fc468ca4cb",
+			"branch": "master",
+			"notests": true
+		},
+		{
 			"importpath": "github.com/onsi/ginkgo",
 			"repository": "https://github.com/onsi/ginkgo",
 			"revision": "16c38793d41b07a5f9ae77d573af7836a994bf27",
@@ -84,6 +114,13 @@
 			"importpath": "github.com/spf13/afero",
 			"repository": "https://github.com/spf13/afero",
 			"revision": "9d16de23201225827d576b4eee772103f71a75d7",
+			"branch": "master",
+			"notests": true
+		},
+		{
+			"importpath": "github.com/tj/go-debug",
+			"repository": "https://github.com/tj/go-debug",
+			"revision": "ff4a55a20a86994118644bbddc6a216da193cc13",
 			"branch": "master",
 			"notests": true
 		},
