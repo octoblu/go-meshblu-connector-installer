@@ -68,7 +68,7 @@ func NewOptions(opts OptionsOptions) (*Options, error) {
 
 	OutputDirectory := opts.OutputDirectory
 	if OutputDirectory == "" {
-		OutputDirectory = GetDefaultServiceDirectory()
+		OutputDirectory = getDefaultServiceDirectory()
 	}
 
 	OutputDirectory, err := filepath.Abs(OutputDirectory)

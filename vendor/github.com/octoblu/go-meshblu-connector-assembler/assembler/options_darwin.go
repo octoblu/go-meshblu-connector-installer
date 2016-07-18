@@ -14,11 +14,6 @@ func getServiceName(uuid string) string {
 	return fmt.Sprintf("com.octoblu.%s", uuid)
 }
 
-// GetDefaultServiceDirectory gets the OS specific install directory
-func GetDefaultServiceDirectory() string {
+func getDefaultServiceDirectory() string {
 	return filepath.Join(os.Getenv("HOME"), ".octoblu", "MeshbluConnectors")
-}
-
-func getUserName() (string, error) {
-	return "", nil
 }
