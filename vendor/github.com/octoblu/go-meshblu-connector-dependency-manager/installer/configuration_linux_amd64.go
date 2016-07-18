@@ -36,7 +36,7 @@ func getBinPath() string {
 // extractBin allows you too extract the bin from the download
 func extractBin(depType, target, tag string) error {
 	if depType == NodeType {
-		return ExtractNode(target, tag)
+		return extractNode(target, tag)
 	}
 	return fmt.Errorf("Unsupported platform")
 }
