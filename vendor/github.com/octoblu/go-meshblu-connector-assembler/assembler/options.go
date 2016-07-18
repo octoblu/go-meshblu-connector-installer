@@ -75,8 +75,8 @@ func NewOptions(opts OptionsOptions) (*Options, error) {
 	if err != nil {
 		return nil, err
 	}
-	ConnectorDirectory := getConnectorDirectory(opts.OutputDirectory, opts.UUID)
-	//
+	ConnectorDirectory := getConnectorDirectory(OutputDirectory, opts.UUID)
+
 	return &Options{
 		ConnectorDirectory: ConnectorDirectory,
 		OutputDirectory:    OutputDirectory,

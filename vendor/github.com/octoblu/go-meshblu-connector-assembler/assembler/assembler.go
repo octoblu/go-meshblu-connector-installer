@@ -62,19 +62,19 @@ func createDirectories(opts Options) error {
 	logDir := opts.LogDirectory
 	binDir := opts.BinDirectory
 
-	debug("creating directories")
+	debug("creating directories: %v", outputDir)
 	err = os.MkdirAll(outputDir, 0755)
 	if err != nil {
 		return err
 	}
 
-	debug("creating log directory")
+	debug("creating log directory: %v", logDir)
 	err = os.MkdirAll(logDir, 0755)
 	if err != nil {
 		return err
 	}
 
-	debug("creating bin directory")
+	debug("creating bin directory: %v", binDir)
 	err = os.MkdirAll(binDir, 0755)
 	if err != nil {
 		return err
