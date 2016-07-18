@@ -32,6 +32,27 @@
 			"notests": true
 		},
 		{
+			"importpath": "github.com/jessevdk/go-flags",
+			"repository": "https://github.com/jessevdk/go-flags",
+			"revision": "f2785f5820ec967043de79c8be97edfc464ca745",
+			"branch": "master",
+			"notests": true
+		},
+		{
+			"importpath": "github.com/kardianos/osext",
+			"repository": "https://github.com/kardianos/osext",
+			"revision": "29ae4ffbc9a6fe9fb2bc5029050ce6996ea1d3bc",
+			"branch": "master",
+			"notests": true
+		},
+		{
+			"importpath": "github.com/kardianos/service",
+			"repository": "https://github.com/kardianos/service",
+			"revision": "5e335590050d6d00f3aa270217d288dda1c94d0a",
+			"branch": "master",
+			"notests": true
+		},
+		{
 			"importpath": "github.com/kr/fs",
 			"repository": "https://github.com/kr/fs",
 			"revision": "2788f0dbd16903de03cb8186e5c7d97b69ad387b",
@@ -53,25 +74,16 @@
 			"notests": true
 		},
 		{
-			"importpath": "github.com/octoblu/go-meshblu-connector-assembler/downloader",
+			"importpath": "github.com/octoblu/go-meshblu-connector-assembler",
 			"repository": "https://github.com/octoblu/go-meshblu-connector-assembler",
-			"revision": "10a2bc6058ff819055fdf8278b1972ba4878ec98",
+			"revision": "79448c0c11250e7248d5b5280864245a6ab36f9a",
 			"branch": "master",
-			"path": "/downloader",
-			"notests": true
-		},
-		{
-			"importpath": "github.com/octoblu/go-meshblu-connector-assembler/extractor",
-			"repository": "https://github.com/octoblu/go-meshblu-connector-assembler",
-			"revision": "10a2bc6058ff819055fdf8278b1972ba4878ec98",
-			"branch": "master",
-			"path": "/extractor",
 			"notests": true
 		},
 		{
 			"importpath": "github.com/octoblu/go-meshblu-connector-dependency-manager",
 			"repository": "https://github.com/octoblu/go-meshblu-connector-dependency-manager",
-			"revision": "1f58f425ccc8c34e5161df99d8dd0621e84faad3",
+			"revision": "fb1303275d7d328efe5d16eb1f255fc1b24b1690",
 			"branch": "master",
 			"notests": true
 		},
@@ -169,6 +181,13 @@
 			"revision": "d5d7737684e596dbabf914ecf946d2783f35bdc2",
 			"branch": "master",
 			"path": "/unicode/norm",
+			"notests": true
+		},
+		{
+			"importpath": "gopkg.in/yaml.v1",
+			"repository": "https://gopkg.in/yaml.v1",
+			"revision": "9f9df34309c04878acc86042b16630b0f696e1de",
+			"branch": "v1",
 			"notests": true
 		},
 		{

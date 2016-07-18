@@ -5,8 +5,8 @@ import (
 	"os"
 )
 
-// CopyFile copies a file
-func CopyFile(source, target string) error {
+// copyFile copies a file
+func copyFile(source, target string) error {
 	os.Remove(target)
 	fileRead, err := os.Open(source)
 	if err != nil {

@@ -7,8 +7,8 @@ import (
 	"strings"
 )
 
-// FinalDependencyFileName gets the final dependency filename
-func FinalDependencyFileName(depType, tag string) string {
+// finalDependencyFileName gets the final dependency filename
+func finalDependencyFileName(depType, tag string) string {
 	if depType == NodeType {
 		return "node.exe"
 	}
@@ -21,8 +21,8 @@ func FinalDependencyFileName(depType, tag string) string {
 	return ""
 }
 
-// GetResourceURI defines the uri to download
-func GetResourceURI(depType, tag string) string {
+// getResourceURI defines the uri to download
+func getResourceURI(depType, tag string) string {
 	if depType == NodeType {
 		return getNodeURI(tag)
 	}
@@ -47,13 +47,13 @@ func getNPMURI(tag string) string {
 	return fmt.Sprintf("https://github.com/npm/npm/archive/%s.zip", tag)
 }
 
-// GetBinPath defines the target location
-func GetBinPath() string {
+// getBinPath defines the target location
+func getBinPath() string {
 	return filepath.Join(os.Getenv("LOCALAPPDATA"), "MeshbluConnectors", "bin")
 }
 
-// ExtractBin allows you too extract the bin from the download
-func ExtractBin(depType, target, tag string) error {
+// extractBin allows you too extract the bin from the download
+func extractBin(depType, target, tag string) error {
 	if depType == NodeType {
 		return nil
 	}
@@ -66,8 +66,8 @@ func ExtractBin(depType, target, tag string) error {
 	return fmt.Errorf("Unsupported platform")
 }
 
-// ExtractNSSM extracts the unzipped nssm directory
-func ExtractNSSM(target, tag string) error {
+// extractNSSM extracts the unzipped nssm directory
+func extractNSSM(target, tag string) error {
 	folderName := fmt.Sprintf("nssm-%s", tag)
 	nssmPath := filepath.Join(target, folderName, "win32", "nssm.exe")
 	nssmNewPath := filepath.Join(target, "nssm.exe")
@@ -78,8 +78,8 @@ func ExtractNSSM(target, tag string) error {
 	return nil
 }
 
-// ExtractNPM extracts the unzipped nssm directory
-func ExtractNPM(target, tag string) error {
+// extractNPM extracts the unzipped nssm directory
+func extractNPM(target, tag string) error {
 	folderName := fmt.Sprintf("npm-%s", strings.Replace(tag, "v", "", -1))
 	npmPath := filepath.Join(target, folderName)
 	nodeModulesPath := filepath.Join(target, "node_modules")

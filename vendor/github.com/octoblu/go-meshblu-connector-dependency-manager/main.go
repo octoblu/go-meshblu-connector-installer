@@ -23,12 +23,12 @@ func main() {
 		cli.StringFlag{
 			Name:   "tag",
 			EnvVar: "MESHBLU_CONNECTOR_DEPENDENCY_TAG",
-			Usage:  "Version of the dependency you want. Values: 'node', 'npm', or 'nssm'.",
+			Usage:  "Version of the dependency you want",
 		},
 		cli.StringFlag{
 			Name:   "type",
 			EnvVar: "MESHBLU_CONNECTOR_DEPENDENCY_TYPE",
-			Usage:  "Type of dependency you want",
+			Usage:  "Type of dependency you want. Values: 'node', 'npm', or 'nssm'.",
 		},
 	}
 	app.Run(os.Args)

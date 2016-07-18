@@ -7,16 +7,16 @@ import (
 	"strings"
 )
 
-// FinalDependencyFileName gets the final dependency filename
-func FinalDependencyFileName(depType, tag string) string {
+// finalDependencyFileName gets the final dependency filename
+func finalDependencyFileName(depType, tag string) string {
 	if depType == NodeType {
 		return "node"
 	}
 	return ""
 }
 
-// GetResourceURI defines the uri to download
-func GetResourceURI(depType, tag string) string {
+// getResourceURI defines the uri to download
+func getResourceURI(depType, tag string) string {
 	if depType == NodeType {
 		return getNodeURI(tag)
 	}
@@ -28,21 +28,21 @@ func getNodeURI(tag string) string {
 	return strings.Replace("https://nodejs.org/dist/:tag:/node-:tag:-linux-x64.tar.gz", ":tag:", tag, -1)
 }
 
-// GetBinPath defines the target location
-func GetBinPath() string {
+// getBinPath defines the target location
+func getBinPath() string {
 	return filepath.Join(os.Getenv("HOME"), ".octoblu", "MeshbluConnectors", "bin")
 }
 
-// ExtractBin allows you too extract the bin from the download
-func ExtractBin(depType, target, tag string) error {
+// extractBin allows you too extract the bin from the download
+func extractBin(depType, target, tag string) error {
 	if depType == NodeType {
 		return ExtractNode(target, tag)
 	}
 	return fmt.Errorf("Unsupported platform")
 }
 
-// ExtractNode extracts the node dependencies
-func ExtractNode(target, tag string) error {
+// extractNode extracts the node dependencies
+func extractNode(target, tag string) error {
 	folderName := strings.Replace("node-:tag:-linux-x64", ":tag:", tag, -1)
 	nodePath := filepath.Join(target, folderName, "bin", "node")
 	nodeSymPath := filepath.Join(target, "node")

@@ -32,13 +32,13 @@ func New() *Client {
 // Do download and install
 func (client *Client) Do(depType, tag string) error {
 	debug("installing dependency", depType, tag)
-	uri := GetResourceURI(depType, tag)
+	uri := getResourceURI(depType, tag)
 	if uri == "" {
 		return fmt.Errorf("unsupported platform")
 	}
 
-	target := GetBinPath()
-	exists, err := FilePathExists(filepath.Join(target, FinalDependencyFileName(depType, tag)))
+	target := getBinPath()
+	exists, err := filePathExists(filepath.Join(target, finalDependencyFileName(depType, tag)))
 	if err != nil {
 		return err
 	}
@@ -65,7 +65,7 @@ func (client *Client) Do(depType, tag string) error {
 	}
 
 	debug("extracting bin...")
-	err = ExtractBin(depType, target, tag)
+	err = extractBin(depType, target, tag)
 	if err != nil {
 		return err
 	}
@@ -119,8 +119,8 @@ func download(uri, target string) (string, error) {
 	return downloadFile, nil
 }
 
-// FilePathExists check if a file exists
-func FilePathExists(path string) (bool, error) {
+// filePathExists check if a file exists
+func filePathExists(path string) (bool, error) {
 	_, err := os.Stat(path)
 
 	if err != nil {
