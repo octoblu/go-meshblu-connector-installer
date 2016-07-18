@@ -62,9 +62,6 @@ func run(context *cli.Context) {
 	IgnitionTag := connectorInfo.Metadata.IgnitionVersion
 
 	runAssembler(UUID, Token, ConnectorName, GithubSlug, Tag, IgnitionTag)
-
-	fmt.Println("Got info: ", connectorInfo.String())
-
 	os.Exit(0)
 }
 

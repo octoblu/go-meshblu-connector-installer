@@ -9,7 +9,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/octoblu/go-meshblu-connector-assembler/extractor"
+	"github.com/octoblu/go-meshblu-connector-dependency-manager/extractor"
 	De "github.com/tj/go-debug"
 )
 

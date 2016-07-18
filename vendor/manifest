@@ -83,7 +83,7 @@
 		{
 			"importpath": "github.com/octoblu/go-meshblu-connector-dependency-manager",
 			"repository": "https://github.com/octoblu/go-meshblu-connector-dependency-manager",
-			"revision": "99b162ae6cab2b136a0a063816223f92f039a965",
+			"revision": "6b9cc9e3588ca380999b6add333853109a70a941",
 			"branch": "master",
 			"notests": true
 		},

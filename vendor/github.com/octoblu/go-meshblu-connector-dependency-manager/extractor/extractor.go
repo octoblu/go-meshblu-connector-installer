@@ -33,7 +33,6 @@ func (client *Client) Do(source, target string) error {
 	var filesToRemove []string
 	var err error
 	if isGZ(source) {
-		fmt.Println("ungzipping", source, target)
 		filesToRemove = append(filesToRemove, source)
 		source, err = client.Ungzip(source, target)
 		if err != nil {
@@ -41,7 +40,6 @@ func (client *Client) Do(source, target string) error {
 		}
 	}
 	if isTar(source) {
-		fmt.Println("untaring", source, target)
 		filesToRemove = append(filesToRemove, source)
 		err = client.Untar(source, target)
 		if err != nil {
@@ -49,7 +47,6 @@ func (client *Client) Do(source, target string) error {
 		}
 	}
 	if isZip(source) {
-		fmt.Println("unzipping", source, target)
 		filesToRemove = append(filesToRemove, source)
 		err = client.Unzip(source, target)
 		if err != nil {
@@ -57,7 +54,6 @@ func (client *Client) Do(source, target string) error {
 		}
 	}
 	for _, fileToRemove := range filesToRemove {
-		fmt.Println("removing compressed file", fileToRemove)
 		err = os.Remove(fileToRemove)
 		if err != nil {
 			return err
