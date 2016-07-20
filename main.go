@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"runtime"
 	"runtime/debug"
 
 	"github.com/codegangsta/cli"
@@ -14,6 +13,7 @@ import (
 	"github.com/octoblu/go-meshblu-connector-assembler/assembler"
 	"github.com/octoblu/go-meshblu-connector-dependency-manager/installer"
 	"github.com/octoblu/go-meshblu-connector-installer/onetimepassword"
+	"github.com/octoblu/go-meshblu-connector-installer/osruntime"
 )
 
 // NodeVersion is the version of node that will be installed
@@ -81,11 +81,10 @@ func getOpts(context *cli.Context) string {
 }
 
 func installNodeAndNPM() {
-	fatalIfError(installer.Install("node", "v5.5.0"))
-
-	if runtime.GOOS == "windows" {
-		fatalIfError(installer.Install("npm", "v3.10.5"))
-	}
+	binPath, err := osruntime.BinPath(osruntime.New())
+	fatalIfError(err)
+	fatalIfError(installer.InstallNode(NodeVersion, binPath))
+	fatalIfError(installer.InstallNPM(NPMVersion, binPath))
 }
 
 func promptForOneTimePassword() string {

@@ -47,8 +47,12 @@ fatal() {
 
 cross_compile_build(){
   for goos in darwin linux windows; do
-    for goarch in 386 amd64; do
-      echo "building: ${goos}-${goarch}"
+    for goarch in 386 amd64 arm; do
+      if [ "${goos}-${goarch}" == 'windows-arm' ]; then
+        echo '* skipping windows-arm'
+        continue
+      fi
+      echo "* building: ${goos}-${goarch}"
       build_on_local "$goos" "$goarch" > /dev/null
     done
   done
