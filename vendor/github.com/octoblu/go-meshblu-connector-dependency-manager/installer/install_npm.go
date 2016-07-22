@@ -11,6 +11,7 @@ import (
 
 	"github.com/octoblu/go-meshblu-connector-installer/osruntime"
 	"github.com/octoblu/unzipit"
+	"github.com/spf13/afero"
 )
 
 // InstallNPM installs the specified version of Node.JS
@@ -25,6 +26,13 @@ func InstallNPMWithoutDefaults(tag, binPath, baseURLStr string, osRuntime osrunt
 		return nil
 	}
 
+	if exists, err := npmIsAlreadyInstalled(binPath); err != nil {
+		return err
+	} else if exists {
+		de("node was already installed, skipping")
+		return nil
+	}
+
 	packageURL, err := npmURL(baseURLStr, tag)
 	if err != nil {
 		return err
@@ -33,6 +41,9 @@ func InstallNPMWithoutDefaults(tag, binPath, baseURLStr string, osRuntime osrunt
 	response, err := http.Get(packageURL.String())
 	if err != nil {
 		return err
+	}
+	if response.StatusCode != 200 {
+		return fmt.Errorf("Expected HTTP status code 200, received: %v", response.StatusCode)
 	}
 
 	return installNPMOnTheFS(tag, binPath, response.Body)
@@ -61,6 +72,10 @@ func installNPMOnTheFS(tag, binPath string, compressedReader io.Reader) error {
 	}
 
 	return nil
+}
+
+func npmIsAlreadyInstalled(binDir string) (bool, error) {
+	return afero.Exists(afero.NewOsFs(), filepath.Join(binDir, "npm"))
 }
 
 func npmURL(baseURLStr, tag string) (*url.URL, error) {

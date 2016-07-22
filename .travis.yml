@@ -3,3 +3,17 @@ go:
 - '1.6'
 install: true
 script: go test $(go list ./... | grep -v /vendor/)
+before_deploy:
+- ./build.sh cross-compile
+- mkdir -p deploy
+- cp dist/* deploy
+deploy:
+- provider: releases
+  api_key:
+    secure: UOjIbuQRAlUQvIahbg2JsDsf2I9BbtBRCoVDDP568ADjbjot+ANLisd/W+YxH4Ge479/a7tVjhsmHx3NhpNMygXQ1ewD/l9ida9eoMqskrsJ+QNOE4qmOn/5B7qHmRGJ5c7J4xVlcSBZ5o44poqw8lLBEcDhf8TXulSxqYuKKCB+xYB78BCVIibllJemU3dwcwfjldJTxCAEspM4IuevDbNk1G0wr01wTu8u2WYUT6mLZYO4hX8m1EoFTK4XlsnISwbYxdCn6r8HOkTlhamXZvoPxuVj6wtboO3O6n2r8/W4adA7trH9ik5z4Pmke4CPvaar15YKjPAvDO+NXSsaEuPkCX8UcGgXsMB4nRnvrZ8/pqTSdNwOM0DSoft7EH8u5TyRy/BMoH+Sjn2EQfIt8Pm5ZV4zJ1uretfa9VPrFa03SzDjrO06oHNxEYNSbOCaURJQi0SmuPVt58fWJfLqhiRcvYkfn5pZUHSJBKTqvZ7i8SxVHz/Uc0lmsjHd7mFnBQVpZLTXR/jDSmButWdG+P9RCDOZC/ZT/iiJDoAU87BHt1qhYRKb7CFnH9hhsfbNXMjALHy6zbXSykvEWa8FBb240KRNdDFhrEFi3HWaXVoNm13l8VFQMgIjaVO52cirlB+j1N1HgInpGYULayi/liD01BYy2kNVZuMeIK0fMt4=
+  file_glob: true
+  file:
+  - "deploy/*"
+  skip_cleanup: true
+  on:
+    tags: true

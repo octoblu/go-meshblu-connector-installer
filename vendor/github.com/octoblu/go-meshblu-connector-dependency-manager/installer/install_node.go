@@ -11,7 +11,11 @@ import (
 	"github.com/octoblu/go-meshblu-connector-installer/osruntime"
 	"github.com/octoblu/unzipit"
 	"github.com/spf13/afero"
+
+	De "github.com/visionmedia/go-debug"
 )
+
+var de = De.Debug("meshblu-connector-installer:install_node")
 
 // InstallNode installs the specified version of Node.JS
 func InstallNode(tag, binPath string) error {
@@ -20,12 +24,28 @@ func InstallNode(tag, binPath string) error {
 
 // InstallNodeWithoutDefaults installs the specified version of Node.JS
 func InstallNodeWithoutDefaults(tag, binPath, baseURLStr string, osRuntime osruntime.OSRuntime) error {
+	de("InstallNodeWithoutDefaults: %v | %v | %v | %v | %v", tag, binPath, baseURLStr, osRuntime.GOOS, osRuntime.GOARCH)
+	if exists, err := nodeIsAlreadyInstalled(binPath, osRuntime); err != nil {
+		return err
+	} else if exists {
+		de("node was already installed, skipping")
+		return nil
+	}
+
 	packageURL, err := nodeURL(baseURLStr, tag, osRuntime)
 	if err != nil {
 		return err
 	}
+	de("resolved packageURL: %v", packageURL)
 
-	response, _ := http.Get(packageURL.String())
+	response, err := http.Get(packageURL.String())
+	if err != nil {
+		return err
+	}
+	if response.StatusCode != 200 {
+		return fmt.Errorf("Expected HTTP status code 200, received: %v", response.StatusCode)
+	}
+
 	if osRuntime.GOOS == Windows {
 		return installNodeOnWindowsFS(binPath, response.Body)
 	}
@@ -59,6 +79,14 @@ func installNodeAndNPMOnFS(binPath string, compressedReader io.Reader) error {
 	}
 
 	return nil
+}
+
+func nodeIsAlreadyInstalled(binDir string, osRuntime osruntime.OSRuntime) (bool, error) {
+	if osRuntime.GOOS == Windows {
+		return afero.Exists(afero.NewOsFs(), filepath.Join(binDir, "node.exe"))
+	}
+
+	return afero.Exists(afero.NewOsFs(), filepath.Join(binDir, "node"))
 }
 
 func nodeURL(baseURLStr, tag string, osRuntime osruntime.OSRuntime) (*url.URL, error) {
