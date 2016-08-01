@@ -50,6 +50,12 @@ func GetOTPInformation(oneTimePassword string) (*OTPInformation, error) {
 	return otp.GetInformation()
 }
 
+// Expire removes this one time password, making it unavailable for use.
+func Expire(oneTimePassword string) error {
+	otp := New(oneTimePassword)
+	return otp.Expire()
+}
+
 // GetInformation exchanges a one time token for information, including
 // the connector type and Meshblu credentials
 func (otp *httpOTP) GetInformation() (*OTPInformation, error) {

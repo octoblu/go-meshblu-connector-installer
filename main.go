@@ -61,7 +61,12 @@ func run(context *cli.Context) {
 	Tag := connectorInfo.Metadata.Tag
 	IgnitionTag := connectorInfo.Metadata.IgnitionVersion
 
-	runAssembler(UUID, Token, ConnectorName, GithubSlug, Tag, IgnitionTag)
+	err = runAssembler(UUID, Token, ConnectorName, GithubSlug, Tag, IgnitionTag)
+	fatalIfError(err)
+
+	err = onetimepassword.Expire(oneTimePassword)
+	fatalIfError(err)
+
 	os.Exit(0)
 }
 
@@ -95,7 +100,7 @@ func promptForOneTimePassword() string {
 	return text
 }
 
-func runAssembler(UUID, Token, ConnectorName, GithubSlug, Tag, IgnitionTag string) {
+func runAssembler(UUID, Token, ConnectorName, GithubSlug, Tag, IgnitionTag string) error {
 	options, err := assembler.NewOptions(assembler.OptionsOptions{
 		ConnectorName: ConnectorName,
 		GithubSlug:    GithubSlug,
@@ -104,9 +109,12 @@ func runAssembler(UUID, Token, ConnectorName, GithubSlug, Tag, IgnitionTag strin
 		Token:         Token,
 		IgnitionTag:   IgnitionTag,
 	})
-	fatalIfError(err)
-	err = assembler.Assemble(*options)
-	fatalIfError(err)
+
+	if err != nil {
+		return err
+	}
+
+	return assembler.Assemble(*options)
 }
 
 func version() string {
