@@ -26,8 +26,28 @@ func New() OSRuntime {
 // BinPath returns the expected binPath for the given OS
 func BinPath(osRuntime OSRuntime) (string, error) {
 	switch osRuntime.GOOS {
-	case "darwin", "linux":
-		return filepath.Join(os.Getenv("HOME"), ".octoblu", "MeshbluConnectors", "bin"), nil
+	case "darwin":
+		return filepath.Join("/Library", "MeshbluConnectors", "bin"), nil
+	case "linux":
+		return filepath.Join("/opt", "bin"), nil
+	case "windows":
+		programFilesDir := os.Getenv("PROGRAMFILESX86")
+		if programFilesDir == "" {
+			programFilesDir = os.Getenv("PROGRAMFILES")
+		}
+		return filepath.Join(programFilesDir, "MeshbluConnectors", "bin"), nil
+	}
+	return "", fmt.Errorf("Unsupported OS: %v", osRuntime.GOOS)
+}
+
+// UserBinPath returns the expected binPath for the given OS
+// for UserService
+func UserBinPath(osRuntime OSRuntime) (string, error) {
+	switch osRuntime.GOOS {
+	case "darwin":
+		return filepath.Join(os.Getenv("HOME"), "Library", "MeshbluConnectors", "bin"), nil
+	case "linux":
+		return filepath.Join(os.Getenv("HOME"), ".config", "MeshbluConnectors", "bin"), nil
 	case "windows":
 		return filepath.Join(os.Getenv("LOCALAPPDATA"), "MeshbluConnectors", "bin"), nil
 	}

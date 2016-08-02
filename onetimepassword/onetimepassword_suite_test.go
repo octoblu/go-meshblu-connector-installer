@@ -9,5 +9,5 @@ import (
 
 func TestOnetimepassword(t *testing.T) {
 	RegisterFailHandler(Fail)
-	RunSpecs(t, "Onetimepassword Suite")
+	RunSpecs(t, "\nOnetimepassword Suite\n")
 }

@@ -6,6 +6,7 @@ import (
 	"log"
 	"os"
 	"runtime/debug"
+	"strings"
 
 	"github.com/codegangsta/cli"
 	"github.com/coreos/go-semver/semver"
@@ -22,6 +23,9 @@ const NodeVersion = "v5.5.0"
 // NPMVersion is the version of npm that will be installed (only applies for windows)
 const NPMVersion = "v3.10.5"
 
+const serviceTypeUserService = "UserService"
+const serviceTypeService = "Service"
+
 func main() {
 	app := cli.NewApp()
 	app.Name = "meshblu-connector-installer"
@@ -32,6 +36,21 @@ func main() {
 			Name:   "one-time-password, o",
 			EnvVar: "MESHBLU_CONNECTOR_INSTALLER_ONE_TIME_PASSWORD",
 			Usage:  "The one time password provided by the Connector Factory",
+		},
+		cli.StringFlag{
+			Name:   "service-type, t",
+			EnvVar: "MESHBLU_CONNECTOR_INSTALLER_SERVICE_TYPE",
+			Usage:  "The type of install: Service, UserService, UserLogin. UserLogin is only available for Windows installs. Default: Service",
+		},
+		cli.StringFlag{
+			Name:   "service-username, u",
+			EnvVar: "MESHBLU_CONNECTOR_INSTALLER_SERVICE_USERNAME",
+			Usage:  "Username to run the connector under",
+		},
+		cli.StringFlag{
+			Name:   "service-password, p",
+			EnvVar: "MESHBLU_CONNECTOR_INSTALLER_SERVICE_PASSWORD",
+			Usage:  "Password for user account. Required for UserService",
 		},
 	}
 	app.Run(os.Args)
@@ -46,10 +65,17 @@ func fatalIfError(err error) {
 }
 
 func run(context *cli.Context) {
-	oneTimePassword := getOpts(context)
+	oneTimePassword, serviceType, serviceUsername, servicePassword := getOpts(context)
 	fmt.Println("Using One Time Password: ", oneTimePassword)
 
-	installNodeAndNPM()
+	if serviceType == serviceTypeUserService {
+		if serviceUsername == "root" {
+			color.Red("Refusing to install UserService as root, this is probably not what you want.")
+			os.Exit(1)
+		}
+	}
+
+	installNodeAndNPM(serviceType)
 	connectorInfo, err := onetimepassword.GetOTPInformation(oneTimePassword)
 	fatalIfError(err)
 
@@ -61,7 +87,7 @@ func run(context *cli.Context) {
 	Tag := connectorInfo.Metadata.Tag
 	IgnitionTag := connectorInfo.Metadata.IgnitionVersion
 
-	err = runAssembler(UUID, Token, ConnectorName, GithubSlug, Tag, IgnitionTag)
+	err = runAssembler(UUID, Token, ConnectorName, GithubSlug, Tag, IgnitionTag, serviceType, serviceUsername, servicePassword)
 	fatalIfError(err)
 
 	err = onetimepassword.Expire(oneTimePassword)
@@ -70,8 +96,15 @@ func run(context *cli.Context) {
 	os.Exit(0)
 }
 
-func getOpts(context *cli.Context) string {
+func getOpts(context *cli.Context) (string, string, string, string) {
 	oneTimePassword := context.String("one-time-password")
+	serviceType := context.String("service-type")
+	serviceUsername := context.String("service-serviceUsername")
+	servicePassword := context.String("service-password")
+
+	if serviceType == "" {
+		serviceType = "Service"
+	}
 
 	if oneTimePassword == "" {
 		oneTimePassword = promptForOneTimePassword()
@@ -82,11 +115,24 @@ func getOpts(context *cli.Context) string {
 		os.Exit(1)
 	}
 
-	return oneTimePassword
+	if serviceType == serviceTypeUserService {
+		if serviceUsername == "" {
+			serviceUsername = os.Getenv("USER")
+			if serviceUsername == "" {
+				color.Red("meshblu-connector-installer needs a Username in UserService mode")
+				os.Exit(1)
+			}
+		}
+	}
+
+	return oneTimePassword, serviceType, serviceUsername, servicePassword
 }
 
-func installNodeAndNPM() {
-	binPath, err := osruntime.BinPath(osruntime.New())
+func installNodeAndNPM(serviceType string) {
+	binPath, err := osruntime.UserBinPath(osruntime.New())
+	if serviceType == serviceTypeService {
+		binPath, err = osruntime.UserBinPath(osruntime.New())
+	}
 	fatalIfError(err)
 	fatalIfError(installer.InstallNode(NodeVersion, binPath))
 	fatalIfError(installer.InstallNPM(NPMVersion, binPath))
@@ -97,17 +143,20 @@ func promptForOneTimePassword() string {
 	fmt.Print("One Time Password: ")
 	text, err := reader.ReadString('\n')
 	fatalIfError(err)
-	return text
+	return strings.TrimSpace(text)
 }
 
-func runAssembler(UUID, Token, ConnectorName, GithubSlug, Tag, IgnitionTag string) error {
+func runAssembler(UUID, Token, ConnectorName, GithubSlug, Tag, IgnitionTag, ServiceType, ServiceUsername, ServicePassword string) error {
 	options, err := assembler.NewOptions(assembler.OptionsOptions{
-		ConnectorName: ConnectorName,
-		GithubSlug:    GithubSlug,
-		Tag:           Tag,
-		UUID:          UUID,
-		Token:         Token,
-		IgnitionTag:   IgnitionTag,
+		ConnectorName:   ConnectorName,
+		GithubSlug:      GithubSlug,
+		Tag:             Tag,
+		UUID:            UUID,
+		Token:           Token,
+		IgnitionTag:     IgnitionTag,
+		ServiceType:     ServiceType,
+		ServiceUsername: ServiceUsername,
+		ServicePassword: ServicePassword,
 	})
 
 	if err != nil {
