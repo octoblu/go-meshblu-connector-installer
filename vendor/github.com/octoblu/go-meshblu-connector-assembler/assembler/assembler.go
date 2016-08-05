@@ -85,10 +85,13 @@ func createDirectories(opts Options) error {
 
 func foreverize(opts Options) error {
 	return foreverizer.Foreverize(foreverizer.Options{
-		ServiceName:  opts.ServiceName,
-		DisplayName:  opts.DisplayName,
-		Description:  opts.Description,
-		IgnitionPath: opts.IgnitionPath,
+		ServiceName:     opts.ServiceName,
+		ServiceType:     opts.ServiceType,
+		ServiceUsername: opts.ServiceUsername,
+		ServicePassword: opts.ServicePassword,
+		DisplayName:     opts.DisplayName,
+		Description:     opts.Description,
+		IgnitionPath:    opts.IgnitionPath,
 	})
 }
 
@@ -112,6 +115,7 @@ func writeMeshbluConfig(opts Options) error {
 func writeServiceConfig(opts Options) error {
 	return serviceconfig.Write(serviceconfig.Options{
 		ServiceName:   opts.ServiceName,
+		ServiceType:   opts.ServiceType,
 		DisplayName:   opts.DisplayName,
 		Description:   opts.Description,
 		ConnectorName: opts.ConnectorName,

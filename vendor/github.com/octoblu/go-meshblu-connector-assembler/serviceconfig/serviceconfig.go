@@ -11,6 +11,7 @@ import (
 // saving a service file
 type Options struct {
 	ServiceName   string
+	ServiceType   string
 	DisplayName   string
 	Description   string
 	ConnectorName string
@@ -23,6 +24,7 @@ type Options struct {
 
 type serviceFile struct {
 	ServiceName   string
+	ServiceType   string
 	DisplayName   string
 	Description   string
 	ConnectorName string
@@ -65,6 +67,7 @@ func optionsToServiceFile(options Options) serviceFile {
 		Stderr: filepath.Join(options.LogDir, "connector-error.log"),
 
 		ServiceName:   options.ServiceName,
+		ServiceType:   options.ServiceType,
 		DisplayName:   options.DisplayName,
 		Description:   options.Description,
 		ConnectorName: options.ConnectorName,

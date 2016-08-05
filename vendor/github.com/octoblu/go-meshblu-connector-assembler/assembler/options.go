@@ -18,6 +18,9 @@ type OptionsOptions struct {
 	Port            int
 	UUID, Token     string
 	Debug           bool
+	ServiceType     string
+	ServiceUsername string
+	ServicePassword string
 }
 
 // Options define the options that the Assemble takes
@@ -43,6 +46,10 @@ type Options struct {
 	Port        int
 	UUID, Token string
 	// Debug           bool
+
+	ServiceType     string
+	ServiceUsername string
+	ServicePassword string
 }
 
 // NewOptions constructs a new Options object using OptionsOptinos
@@ -65,10 +72,21 @@ func NewOptions(opts OptionsOptions) (*Options, error) {
 	if opts.IgnitionTag == "" {
 		return nil, fmt.Errorf("Missing required opt: opts.IgnitionTag")
 	}
+	if opts.ServiceType == "" {
+		return nil, fmt.Errorf("Missing required opt: opts.ServiceType")
+	}
+	if opts.ServiceType == "UserService" {
+		if opts.ServiceUsername == "" {
+			return nil, fmt.Errorf("Missing required opt: opts.ServiceUsername")
+		}
+	}
 
 	OutputDirectory := opts.OutputDirectory
 	if OutputDirectory == "" {
-		OutputDirectory = getDefaultServiceDirectory()
+		OutputDirectory = getUserServiceDirectory()
+		if opts.ServiceType == "Service" {
+			OutputDirectory = getServiceDirectory()
+		}
 	}
 
 	OutputDirectory, err := filepath.Abs(OutputDirectory)
@@ -96,6 +114,10 @@ func NewOptions(opts OptionsOptions) (*Options, error) {
 		Tag:           opts.Tag,
 		UUID:          opts.UUID,
 		Token:         opts.Token,
+
+		ServiceType:     opts.ServiceType,
+		ServiceUsername: opts.ServiceUsername,
+		ServicePassword: opts.ServicePassword,
 	}, nil
 }
 

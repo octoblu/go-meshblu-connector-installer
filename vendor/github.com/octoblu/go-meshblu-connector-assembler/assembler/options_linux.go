@@ -14,6 +14,10 @@ func getServiceName(uuid string) string {
 	return fmt.Sprintf("MeshbluConnector-%s", uuid)
 }
 
-func getDefaultServiceDirectory() string {
-	return filepath.Join(os.Getenv("HOME"), ".octoblu", "MeshbluConnectors")
+func getServiceDirectory() string {
+	return filepath.Join("/opt", "MeshbluConnectors")
+}
+
+func getUserServiceDirectory() string {
+	return filepath.Join(os.Getenv("HOME"), ".config", "MeshbluConnectors")
 }

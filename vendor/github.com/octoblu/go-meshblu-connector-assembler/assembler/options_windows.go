@@ -14,7 +14,14 @@ func getServiceName(uuid string) string {
 	return fmt.Sprintf("MeshbluConnector-%s", uuid)
 }
 
-// getDefaultServiceDirectory gets the OS specific install directory
-func getDefaultServiceDirectory() string {
+func getServiceDirectory() string {
+	programFilesDir := os.Getenv("PROGRAMFILESX86")
+	if programFilesDir == "" {
+		programFilesDir = os.Getenv("PROGRAMFILES")
+	}
+	return filepath.Join(programFilesDir, "MeshbluConnectors")
+}
+
+func getUserServiceDirectory() string {
 	return filepath.Join(os.Getenv("LOCALAPPDATA"), "MeshbluConnectors")
 }

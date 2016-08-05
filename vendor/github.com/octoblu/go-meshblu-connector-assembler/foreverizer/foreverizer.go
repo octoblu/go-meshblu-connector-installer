@@ -2,7 +2,6 @@ package foreverizer
 
 import (
 	"fmt"
-	"runtime"
 
 	"github.com/kardianos/service"
 	De "github.com/tj/go-debug"
@@ -13,10 +12,13 @@ var debug = De.Debug("meshblu-connector-assembler:foreverizer")
 // Options device the options to be passed
 // to construct a new Foreverizer
 type Options struct {
-	ServiceName  string
-	DisplayName  string
-	Description  string
-	IgnitionPath string
+	ServiceName     string
+	ServiceType     string
+	ServiceUsername string
+	ServicePassword string
+	DisplayName     string
+	Description     string
+	IgnitionPath    string
 }
 
 // Foreverize registers the service with the OS
@@ -27,9 +29,18 @@ func Foreverize(opts Options) error {
 	}
 
 	debug("foreverizing...")
-	userService := true
-	if runtime.GOOS == "linux" {
-		userService = false
+	fmt.Println("ServiceName", opts.ServiceName)
+	if opts.ServiceType == "UserLogin" {
+		return userLoginInstall(opts)
+	}
+
+	return serviceInstall(opts)
+}
+
+func serviceInstall(opts Options) error {
+	userService := false
+	if opts.ServiceType == "UserService" {
+		userService = true
 	}
 	svcConfig := &service.Config{
 		Name:        opts.ServiceName,
@@ -39,6 +50,8 @@ func Foreverize(opts Options) error {
 		Option: service.KeyValue{
 			"UserService": userService,
 			"KeepAlive":   true,
+			"UserName":    opts.ServiceUsername,
+			"Password":    opts.ServicePassword,
 		},
 	}
 
@@ -80,5 +93,14 @@ func validateOptions(opts Options) error {
 	if opts.ServiceName == "" {
 		return fmt.Errorf("Missing required param: ServiceName")
 	}
+	if opts.ServiceType == "" {
+		return fmt.Errorf("Missing required param: ServiceType")
+	}
+	if opts.ServiceType == "UserService" {
+		if opts.ServiceUsername == "" {
+			return fmt.Errorf("Missing required param: ServiceUsername")
+		}
+	}
+
 	return nil
 }
