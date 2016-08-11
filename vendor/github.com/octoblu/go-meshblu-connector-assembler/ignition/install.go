@@ -28,7 +28,7 @@ func Install(options InstallOptions) error {
 // installs it into the correct place on the file
 // system specified
 func InstallWithoutDefaults(options InstallOptions, fs afero.Fs) error {
-	debug("Downloading ignition")
+	debug("Downloading ignition", options.IgnitionURL)
 	response, err := http.Get(options.IgnitionURL)
 	if err != nil {
 		return err
