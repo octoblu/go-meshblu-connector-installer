@@ -131,7 +131,7 @@ func getOpts(context *cli.Context) (string, string, string, string) {
 func installNodeAndNPM(serviceType string) {
 	binPath, err := osruntime.UserBinPath(osruntime.New())
 	if serviceType == serviceTypeService {
-		binPath, err = osruntime.UserBinPath(osruntime.New())
+		binPath, err = osruntime.BinPath(osruntime.New())
 	}
 	fatalIfError(err)
 	fatalIfError(installer.InstallNode(NodeVersion, binPath))

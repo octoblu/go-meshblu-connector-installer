@@ -24,7 +24,7 @@ func New() OSRuntime {
 }
 
 // BinPath returns the expected binPath for the given OS
-func BinPath(osRuntime OSRuntime, serviceType string) (string, error) {
+func BinPath(osRuntime OSRuntime) (string, error) {
 	switch osRuntime.GOOS {
 	case "darwin":
 		return filepath.Join("/Library", "MeshbluConnectors", "bin"), nil
