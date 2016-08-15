@@ -8,13 +8,14 @@ import (
 )
 
 func userLoginInstall(opts Options) error {
+	ignitionPath := opts.IgnitionPath
 	key, err := registry.OpenKey(registry.CURRENT_USER, `Software\Microsoft\Windows\CurrentVersion\Run`, registry.WRITE)
 	if err != nil {
 		return err
 	}
-	ignitionPath := fmt.Sprintf("\"%s\"", opts.IgnitionPath)
+	quotedIgnitionPath := fmt.Sprintf("\"%s\"", ignitionPath)
 	debug("writing registry key...")
-	key.SetStringValue(opts.ServiceName, ignitionPath)
+	key.SetStringValue(opts.ServiceName, quotedIgnitionPath)
 	key.Close()
 
 	cmd := exec.Command(ignitionPath)
