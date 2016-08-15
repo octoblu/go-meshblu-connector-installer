@@ -2,6 +2,7 @@ package assembler
 
 import (
 	"fmt"
+	"os"
 	"path/filepath"
 	"runtime"
 )
@@ -73,11 +74,11 @@ func NewOptions(opts OptionsOptions) (*Options, error) {
 		return nil, fmt.Errorf("Missing required opt: opts.IgnitionTag")
 	}
 	if opts.ServiceType == "" {
-		return nil, fmt.Errorf("Missing required opt: opts.ServiceType")
+		opts.ServiceType = "Service"
 	}
 	if opts.ServiceType == "UserService" {
 		if opts.ServiceUsername == "" {
-			return nil, fmt.Errorf("Missing required opt: opts.ServiceUsername")
+			opts.ServiceUsername = os.Getenv("USER")
 		}
 	}
 
