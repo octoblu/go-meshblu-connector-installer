@@ -27,3 +27,4 @@ entrypoint/meshblu-connector-installer
 go-meshblu-connector-installer
 entrypoint/go-meshblu-connector-installer
 dist
+coverage.txt

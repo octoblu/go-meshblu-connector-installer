@@ -2,7 +2,8 @@ language: go
 go:
 - '1.6'
 install: true
-script: go test $(go list ./... | grep -v /vendor/)
+script:
+- ./go.test.sh
 before_deploy:
 - ./build.sh cross-compile
 - mkdir -p deploy
