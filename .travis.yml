@@ -8,6 +8,8 @@ before_deploy:
 - ./build.sh cross-compile
 - mkdir -p deploy
 - cp dist/* deploy
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
 deploy:
 - provider: releases
   api_key:
