@@ -4,7 +4,6 @@
 		{
 			"importpath": "github.com/codegangsta/cli",
 			"repository": "https://github.com/codegangsta/cli",
-			"vcs": "",
 			"revision": "71f57d300dd6a780ac1856c005c4b518cfd498ec",
 			"branch": "master",
 			"notests": true
@@ -12,7 +11,6 @@
 		{
 			"importpath": "github.com/coreos/go-semver/semver",
 			"repository": "https://github.com/coreos/go-semver",
-			"vcs": "",
 			"revision": "37bb68f88c4418889f0a9bfea4a5333d36bd15d5",
 			"branch": "master",
 			"path": "/semver",
@@ -21,7 +19,6 @@
 		{
 			"importpath": "github.com/fatih/color",
 			"repository": "https://github.com/fatih/color",
-			"vcs": "",
 			"revision": "533cd7fd8a85905f67a1753afb4deddc85ea174f",
 			"branch": "master",
 			"notests": true
@@ -29,7 +26,6 @@
 		{
 			"importpath": "github.com/golang/protobuf/proto",
 			"repository": "https://github.com/golang/protobuf",
-			"vcs": "",
 			"revision": "874264fbbb43f4d91e999fecb4b40143ed611400",
 			"branch": "master",
 			"path": "/proto",
@@ -38,7 +34,6 @@
 		{
 			"importpath": "github.com/jessevdk/go-flags",
 			"repository": "https://github.com/jessevdk/go-flags",
-			"vcs": "",
 			"revision": "f2785f5820ec967043de79c8be97edfc464ca745",
 			"branch": "master",
 			"notests": true
@@ -46,7 +41,6 @@
 		{
 			"importpath": "github.com/kardianos/osext",
 			"repository": "https://github.com/kardianos/osext",
-			"vcs": "",
 			"revision": "29ae4ffbc9a6fe9fb2bc5029050ce6996ea1d3bc",
 			"branch": "master",
 			"notests": true
@@ -54,7 +48,6 @@
 		{
 			"importpath": "github.com/kardianos/service",
 			"repository": "https://github.com/kardianos/service",
-			"vcs": "",
 			"revision": "5e335590050d6d00f3aa270217d288dda1c94d0a",
 			"branch": "master",
 			"notests": true
@@ -62,7 +55,6 @@
 		{
 			"importpath": "github.com/kr/fs",
 			"repository": "https://github.com/kr/fs",
-			"vcs": "",
 			"revision": "2788f0dbd16903de03cb8186e5c7d97b69ad387b",
 			"branch": "master",
 			"notests": true
@@ -70,7 +62,6 @@
 		{
 			"importpath": "github.com/mattn/go-colorable",
 			"repository": "https://github.com/mattn/go-colorable",
-			"vcs": "",
 			"revision": "9cbef7c35391cca05f15f8181dc0b18bc9736dbb",
 			"branch": "master",
 			"notests": true
@@ -78,7 +69,6 @@
 		{
 			"importpath": "github.com/mattn/go-isatty",
 			"repository": "https://github.com/mattn/go-isatty",
-			"vcs": "",
 			"revision": "56b76bdf51f7708750eac80fa38b952bb9f32639",
 			"branch": "master",
 			"notests": true
@@ -86,15 +76,13 @@
 		{
 			"importpath": "github.com/octoblu/go-meshblu-connector-assembler",
 			"repository": "https://github.com/octoblu/go-meshblu-connector-assembler",
-			"vcs": "git",
-			"revision": "5eb9c23ec25fa38d35dbc12a6409a25a90a4e291",
+			"revision": "7922179843c71cff53605472cf0f68fd1f6305fd",
 			"branch": "master",
 			"notests": true
 		},
 		{
 			"importpath": "github.com/octoblu/go-meshblu-connector-dependency-manager",
 			"repository": "https://github.com/octoblu/go-meshblu-connector-dependency-manager",
-			"vcs": "",
 			"revision": "5a17de77997c073a25dfe50eb6cce7cf82b72e66",
 			"branch": "master",
 			"notests": true
@@ -102,7 +90,6 @@
 		{
 			"importpath": "github.com/octoblu/unzipit",
 			"repository": "https://github.com/octoblu/unzipit",
-			"vcs": "",
 			"revision": "da0d7368be9ace550e15ad554aaf69fc468ca4cb",
 			"branch": "master",
 			"notests": true
@@ -110,7 +97,6 @@
 		{
 			"importpath": "github.com/onsi/ginkgo",
 			"repository": "https://github.com/onsi/ginkgo",
-			"vcs": "",
 			"revision": "16c38793d41b07a5f9ae77d573af7836a994bf27",
 			"branch": "master",
 			"notests": true
@@ -118,7 +104,6 @@
 		{
 			"importpath": "github.com/onsi/gomega",
 			"repository": "https://github.com/onsi/gomega",
-			"vcs": "",
 			"revision": "fcb0f1276bbd7cf097f5a7fd86cc68b50da9376f",
 			"branch": "master",
 			"notests": true
@@ -126,7 +111,6 @@
 		{
 			"importpath": "github.com/pkg/errors",
 			"repository": "https://github.com/pkg/errors",
-			"vcs": "",
 			"revision": "a2d6902c6d2a2f194eb3fb474981ab7867c81505",
 			"branch": "master",
 			"notests": true
@@ -134,7 +118,6 @@
 		{
 			"importpath": "github.com/pkg/sftp",
 			"repository": "https://github.com/pkg/sftp",
-			"vcs": "",
 			"revision": "57fcf4a640a942eb05181f929601f8f4409eda3e",
 			"branch": "master",
 			"notests": true
@@ -142,7 +125,6 @@
 		{
 			"importpath": "github.com/spf13/afero",
 			"repository": "https://github.com/spf13/afero",
-			"vcs": "",
 			"revision": "9d16de23201225827d576b4eee772103f71a75d7",
 			"branch": "master",
 			"notests": true
@@ -150,7 +132,6 @@
 		{
 			"importpath": "github.com/tj/go-debug",
 			"repository": "https://github.com/tj/go-debug",
-			"vcs": "",
 			"revision": "ff4a55a20a86994118644bbddc6a216da193cc13",
 			"branch": "master",
 			"notests": true
@@ -158,7 +139,6 @@
 		{
 			"importpath": "github.com/visionmedia/go-debug",
 			"repository": "https://github.com/visionmedia/go-debug",
-			"vcs": "",
 			"revision": "ff4a55a20a86994118644bbddc6a216da193cc13",
 			"branch": "master",
 			"notests": true
@@ -166,7 +146,6 @@
 		{
 			"importpath": "golang.org/x/crypto/curve25519",
 			"repository": "https://go.googlesource.com/crypto",
-			"vcs": "",
 			"revision": "2c99acdd1e9b90d779ca23f632aad86af9909c62",
 			"branch": "master",
 			"path": "/curve25519",
@@ -175,7 +154,6 @@
 		{
 			"importpath": "golang.org/x/crypto/ed25519",
 			"repository": "https://go.googlesource.com/crypto",
-			"vcs": "",
 			"revision": "2c99acdd1e9b90d779ca23f632aad86af9909c62",
 			"branch": "master",
 			"path": "/ed25519",
@@ -184,7 +162,6 @@
 		{
 			"importpath": "golang.org/x/crypto/ssh",
 			"repository": "https://go.googlesource.com/crypto",
-			"vcs": "",
 			"revision": "2c99acdd1e9b90d779ca23f632aad86af9909c62",
 			"branch": "master",
 			"path": "/ssh",
@@ -193,7 +170,6 @@
 		{
 			"importpath": "golang.org/x/sys/windows",
 			"repository": "https://go.googlesource.com/sys",
-			"vcs": "git",
 			"revision": "a646d33e2ee3172a661fc09bca23bb4889a41bc8",
 			"branch": "master",
 			"path": "windows",
@@ -202,7 +178,6 @@
 		{
 			"importpath": "golang.org/x/text/transform",
 			"repository": "https://go.googlesource.com/text",
-			"vcs": "",
 			"revision": "d5d7737684e596dbabf914ecf946d2783f35bdc2",
 			"branch": "master",
 			"path": "/transform",
@@ -211,7 +186,6 @@
 		{
 			"importpath": "golang.org/x/text/unicode/norm",
 			"repository": "https://go.googlesource.com/text",
-			"vcs": "",
 			"revision": "d5d7737684e596dbabf914ecf946d2783f35bdc2",
 			"branch": "master",
 			"path": "/unicode/norm",
@@ -220,7 +194,6 @@
 		{
 			"importpath": "gopkg.in/yaml.v1",
 			"repository": "https://gopkg.in/yaml.v1",
-			"vcs": "",
 			"revision": "9f9df34309c04878acc86042b16630b0f696e1de",
 			"branch": "v1",
 			"notests": true
@@ -228,7 +201,6 @@
 		{
 			"importpath": "gopkg.in/yaml.v2",
 			"repository": "https://gopkg.in/yaml.v2",
-			"vcs": "",
 			"revision": "a83829b6f1293c91addabc89d0571c246397bbf4",
 			"branch": "v2",
 			"notests": true

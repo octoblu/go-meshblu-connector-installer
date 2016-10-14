@@ -44,7 +44,7 @@ func InstallWithoutDefaults(options InstallOptions, fs afero.Fs) error {
 	}
 
 	debug("Making the directory")
-	err = fs.MkdirAll(filepath.Base(options.IgnitionPath), 0755)
+	err = fs.MkdirAll(filepath.Dir(options.IgnitionPath), 0755)
 	if err != nil {
 		return err
 	}
