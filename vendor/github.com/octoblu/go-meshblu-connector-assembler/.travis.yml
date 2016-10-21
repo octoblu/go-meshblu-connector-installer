@@ -1,0 +1,25 @@
+language: go
+go:
+- '1.6'
+branches:
+  only:
+  - /^v[0-9]/
+install: true
+script:
+- ./go.test.sh
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
+before_deploy:
+- ./build.sh cross-compile
+- mkdir -p deploy
+- cp dist/* deploy
+deploy:
+- provider: releases
+  api_key:
+    secure: "oh9i2WxMpNFCH5emF3575y+bi5eb9ZjGuHSopvy1Sj6PzhdWAPJHHHLIDvG2FZyeyd2uZnl3BrHa1fjWD/dS4XBuPCl5emf4CmyJIUBAa68q6ifGvL9GGOFwm74B0/jhZxngMSKdHbQnUpDYyP4TH+xIjM68sQpFmYBxS3INGeMxlXHIAaaF8NGRPaiMw7vFy6hr1nV8hXWGoV5E5kIOfFgWkD1R1+H6RPsCWmwqzPCAGBNcK/l6TqjnoT1hrKXZT1EpI09up8WFs4jLsDe1iwYbQ2SJxx9C6BoYniDvQEAkJE00K9bmcYiNfm4GHmZuSAb93fPInaH5vK/Jia2vldnL3BRWGahFILByDmTownfpzu7UdEVLxxIbJmzLfQ4u/CYq2fBsdxTdbG0WwsQNGeVL82WOWxaikIumgOFVkqySNw9jT7N8cU4S3psNUsqbBJtAyRi6nDFdztzlMVd0JZ0RYvA5Q+3C79mxRDtkY441fbOrl/atJ8+AQdKlSztiLWFtx2lSIbe6xFqAejvu4hnbNVTCjU9X2sjBrdYOcSBwwPQR3Lq20698dOu2qjF4S70EyMYAnd42bPLoKeElqnTFOBrMHCfLzvSCmktFS33/VG5SuSNILPr55hzw5x6qhGIKiYIWni8ateHFenytI5TmZiv0ldy0HhdASIGi7fg="
+  file_glob: true
+  file:
+  - "deploy/*"
+  skip_cleanup: true
+  on:
+    tags: true

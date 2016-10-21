@@ -47,6 +47,7 @@ func serviceInstall(opts Options) error {
 		DisplayName: opts.DisplayName,
 		Description: opts.Description,
 		Executable:  opts.IgnitionPath,
+		Dependencies: []string{ "LanmanServer" },
 		Option: service.KeyValue{
 			"UserService": userService,
 			"KeepAlive":   true,
