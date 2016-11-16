@@ -1,4 +1,4 @@
-FROM golang:1.6
+FROM golang:1.7
 MAINTAINER Octoblu, Inc. <docker@octoblu.com>
 
 WORKDIR /go/src/github.com/octoblu/meshblu-connector-installer
