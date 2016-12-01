@@ -37,6 +37,11 @@ func main() {
 			EnvVar: "MESHBLU_CONNECTOR_INSTALLER_ONE_TIME_PASSWORD",
 			Usage:  "The one time password provided by the Connector Factory",
 		},
+		cli.BoolFlag{
+			Name:   "skip-one-time-password-expiration, s",
+			EnvVar: "MESHBLU_CONNECTOR_INSTALLER_SKIP_ONE_TIME_PASSWORD_EXPIRATION",
+			Usage:  "Skip the expiration of the one time password. This lets the installer run multiple times on the same password",
+		},
 		cli.StringFlag{
 			Name:   "service-type, t",
 			EnvVar: "MESHBLU_CONNECTOR_INSTALLER_SERVICE_TYPE",
@@ -65,7 +70,7 @@ func fatalIfError(err error) {
 }
 
 func run(context *cli.Context) {
-	oneTimePassword, serviceType, serviceUsername, servicePassword := getOpts(context)
+	oneTimePassword, skipExpiration, serviceType, serviceUsername, servicePassword := getOpts(context)
 	fmt.Println("Using One Time Password: ", oneTimePassword)
 
 	if serviceType == serviceTypeUserService {
@@ -90,14 +95,20 @@ func run(context *cli.Context) {
 	err = runAssembler(UUID, Token, ConnectorName, GithubSlug, Tag, IgnitionTag, serviceType, serviceUsername, servicePassword)
 	fatalIfError(err)
 
+	if skipExpiration {
+		fmt.Fprintln(os.Stderr, "warning: skipping one-time-password expiration")
+		os.Exit(0)
+	}
+
 	err = onetimepassword.Expire(oneTimePassword)
 	fatalIfError(err)
 
 	os.Exit(0)
 }
 
-func getOpts(context *cli.Context) (string, string, string, string) {
+func getOpts(context *cli.Context) (string, bool, string, string, string) {
 	oneTimePassword := context.String("one-time-password")
+	skipExpiration := context.Bool("skip-one-time-password-expiration")
 	serviceType := context.String("service-type")
 	serviceUsername := context.String("service-serviceUsername")
 	servicePassword := context.String("service-password")
@@ -125,7 +136,7 @@ func getOpts(context *cli.Context) (string, string, string, string) {
 		}
 	}
 
-	return oneTimePassword, serviceType, serviceUsername, servicePassword
+	return oneTimePassword, skipExpiration, serviceType, serviceUsername, servicePassword
 }
 
 func installNodeAndNPM(serviceType string) {
