@@ -15,8 +15,8 @@ type OTPInformation struct {
 		Connector       string `json:"connector"`
 		Tag             string `json:"tag"`
 		Meshblu         struct {
-			Domain string `json:"domain",omitifempty`
-		} `json:"meshblu",omitifempty`
+			Domain string `json:"domain,omitempty"`
+		} `json:"meshblu,omitempty"`
 	} `json:"metadata"`
 }
 

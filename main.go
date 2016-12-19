@@ -92,7 +92,10 @@ func run(context *cli.Context) {
 	Tag := connectorInfo.Metadata.Tag
 	IgnitionTag := connectorInfo.Metadata.IgnitionVersion
 
-	err = runAssembler(UUID, Token, ConnectorName, GithubSlug, Tag, IgnitionTag, serviceType, serviceUsername, servicePassword)
+	Domain := connectorInfo.Metadata.Meshblu.Domain
+	ResolveSRV := Domain != ""
+
+	err = runAssembler(UUID, Token, ConnectorName, GithubSlug, Tag, IgnitionTag, serviceType, serviceUsername, servicePassword, Domain, ResolveSRV)
 	fatalIfError(err)
 
 	if skipExpiration {
@@ -157,7 +160,7 @@ func promptForOneTimePassword() string {
 	return strings.TrimSpace(text)
 }
 
-func runAssembler(UUID, Token, ConnectorName, GithubSlug, Tag, IgnitionTag, ServiceType, ServiceUsername, ServicePassword string) error {
+func runAssembler(UUID, Token, ConnectorName, GithubSlug, Tag, IgnitionTag, ServiceType, ServiceUsername, ServicePassword, Domain string, ResolveSRV bool) error {
 	options, err := assembler.NewOptions(assembler.OptionsOptions{
 		ConnectorName:   ConnectorName,
 		GithubSlug:      GithubSlug,
@@ -168,6 +171,8 @@ func runAssembler(UUID, Token, ConnectorName, GithubSlug, Tag, IgnitionTag, Serv
 		ServiceType:     ServiceType,
 		ServiceUsername: ServiceUsername,
 		ServicePassword: ServicePassword,
+		ResolveSRV:      ResolveSRV,
+		Domain:          Domain,
 	})
 
 	if err != nil {

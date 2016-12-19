@@ -108,7 +108,7 @@ func writeMeshbluConfig(opts Options) error {
 		UUID:       opts.UUID,
 		Token:      opts.Token,
 		Domain:     opts.Domain,
-		ResolveSrv: opts.ResolveSrv,
+		ResolveSRV: opts.ResolveSRV,
 	})
 }
 

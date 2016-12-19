@@ -16,7 +16,7 @@ type OptionsOptions struct {
 	OutputDirectory string
 	ServiceName     string
 	Domain          string
-	ResolveSrv      bool
+	ResolveSRV      bool
 	UUID, Token     string
 	Debug           bool
 	ServiceType     string
@@ -44,7 +44,7 @@ type Options struct {
 	Description string
 
 	Domain      string
-	ResolveSrv  bool
+	ResolveSRV  bool
 	UUID, Token string
 	// Debug           bool
 
@@ -99,8 +99,8 @@ func NewOptions(opts OptionsOptions) (*Options, error) {
 	return &Options{
 		ConnectorDirectory: ConnectorDirectory,
 		OutputDirectory:    OutputDirectory,
-		Domain:             getDomain(opts.Domain),
-		ResolveSrv:         true,
+		Domain:             getDomain(opts.Domain, opts.ResolveSRV),
+		ResolveSRV:         opts.ResolveSRV,
 		IgnitionURL:        getIgnitionURI(opts.IgnitionTag, runtime.GOOS, runtime.GOARCH),
 		IgnitionPath:       getIgnitionPath(ConnectorDirectory),
 		LogDirectory:       getLogDirectory(ConnectorDirectory),
@@ -150,7 +150,11 @@ func getDownloadURL(connector, tag, githubSlug, goos, goarch string) string {
 	return fmt.Sprintf("%s/%s/%s", baseURI, tag, fileName)
 }
 
-func getDomain(domain string) string {
+func getDomain(domain string, resolveSrv bool) string {
+	if !resolveSrv {
+		return ""
+	}
+
 	if domain != "" {
 		return domain
 	}
