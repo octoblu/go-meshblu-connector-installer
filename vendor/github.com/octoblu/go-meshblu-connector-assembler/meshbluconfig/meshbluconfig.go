@@ -8,19 +8,19 @@ import (
 )
 
 type meshbluConfig struct {
-	UUID     string `json:"uuid"`
-	Token    string `json:"token"`
-	Hostname string `json:"hostname"`
-	Port     int    `json:"port"`
+	UUID       string `json:"uuid"`
+	Token      string `json:"token"`
+	Domain     string `json:"domain"`
+	ResolveSrv bool   `json:"resolveSrv"`
 }
 
 // Options are the meshblu options that will be written to the file system
 type Options struct {
-	DirPath  string
-	UUID     string
-	Token    string
-	Hostname string
-	Port     int
+	DirPath    string
+	UUID       string
+	Token      string
+	Domain     string
+	ResolveSrv bool
 }
 
 // Write a meshblu JSON to the file system
@@ -32,10 +32,10 @@ func Write(options Options) error {
 // your own FileSystem!
 func WriteWithFS(options Options, fs afero.Fs) error {
 	config := meshbluConfig{
-		UUID:     options.UUID,
-		Token:    options.Token,
-		Hostname: options.Hostname,
-		Port:     options.Port,
+		UUID:       options.UUID,
+		Token:      options.Token,
+		Domain:     options.Domain,
+		ResolveSrv: options.ResolveSrv,
 	}
 	data, err := json.MarshalIndent(&config, "", "  ")
 	if err != nil {

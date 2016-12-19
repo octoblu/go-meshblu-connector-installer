@@ -15,8 +15,8 @@ type OptionsOptions struct {
 	Tag             string
 	OutputDirectory string
 	ServiceName     string
-	Hostname        string
-	Port            int
+	Domain          string
+	ResolveSrv      bool
 	UUID, Token     string
 	Debug           bool
 	ServiceType     string
@@ -43,8 +43,8 @@ type Options struct {
 	DisplayName string
 	Description string
 
-	Hostname    string
-	Port        int
+	Domain      string
+	ResolveSrv  bool
 	UUID, Token string
 	// Debug           bool
 
@@ -99,8 +99,8 @@ func NewOptions(opts OptionsOptions) (*Options, error) {
 	return &Options{
 		ConnectorDirectory: ConnectorDirectory,
 		OutputDirectory:    OutputDirectory,
-		Hostname:           getHostname(opts.Hostname),
-		Port:               getPort(opts.Port),
+		Domain:             getDomain(opts.Domain),
+		ResolveSrv:         true,
 		IgnitionURL:        getIgnitionURI(opts.IgnitionTag, runtime.GOOS, runtime.GOARCH),
 		IgnitionPath:       getIgnitionPath(ConnectorDirectory),
 		LogDirectory:       getLogDirectory(ConnectorDirectory),
@@ -150,12 +150,12 @@ func getDownloadURL(connector, tag, githubSlug, goos, goarch string) string {
 	return fmt.Sprintf("%s/%s/%s", baseURI, tag, fileName)
 }
 
-func getHostname(hostname string) string {
-	if hostname != "" {
-		return hostname
+func getDomain(domain string) string {
+	if domain != "" {
+		return domain
 	}
 
-	return "meshblu.octoblu.com"
+	return "octoblu.com"
 }
 
 func getIgnitionURI(tag, goos, goarch string) string {
@@ -165,12 +165,4 @@ func getIgnitionURI(tag, goos, goarch string) string {
 
 func getLogDirectory(connectorDirectory string) string {
 	return filepath.Join(connectorDirectory, "log")
-}
-
-func getPort(port int) int {
-	if port != 0 {
-		return port
-	}
-
-	return 443
 }

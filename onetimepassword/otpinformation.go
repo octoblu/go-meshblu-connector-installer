@@ -10,12 +10,13 @@ type OTPInformation struct {
 	UUID     string `json:"uuid"`
 	Token    string `json:"token"`
 	Metadata struct {
-		GithubSlug                string `json:"githubSlug"`
-		ConnectorAssemblerVersion string `json:"connectorAssemblerVersion"`
-		DependencyManagerVersion  string `json:"dependencyManagerVersion"`
-		IgnitionVersion           string `json:"ignitionVersion"`
-		Connector                 string `json:"connector"`
-		Tag                       string `json:"tag"`
+		GithubSlug      string `json:"githubSlug"`
+		IgnitionVersion string `json:"ignitionVersion"`
+		Connector       string `json:"connector"`
+		Tag             string `json:"tag"`
+		Meshblu         struct {
+			Domain string `json:"domain",omitifempty`
+		} `json:"meshblu",omitifempty`
 	} `json:"metadata"`
 }
 

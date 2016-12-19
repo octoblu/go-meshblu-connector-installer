@@ -104,11 +104,11 @@ func installIgnition(opts Options) error {
 
 func writeMeshbluConfig(opts Options) error {
 	return meshbluconfig.Write(meshbluconfig.Options{
-		DirPath:  opts.ConnectorDirectory,
-		UUID:     opts.UUID,
-		Token:    opts.Token,
-		Hostname: opts.Hostname,
-		Port:     opts.Port,
+		DirPath:    opts.ConnectorDirectory,
+		UUID:       opts.UUID,
+		Token:      opts.Token,
+		Domain:     opts.Domain,
+		ResolveSrv: opts.ResolveSrv,
 	})
 }
 
