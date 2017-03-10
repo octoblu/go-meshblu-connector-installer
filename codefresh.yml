@@ -1,0 +1,39 @@
+version: '1.0'
+steps:
+
+  perform_tests:
+    image: golang:latest
+    working_directory: ${{main_clone}}
+    description: Performing unit tests...
+    commands:
+      # Need to have the source in the correct GOPATH folder - let's do that
+      - mkdir -p /go/src/github.com/${{CF_REPO_OWNER}}
+      - ln -s /codefresh/volume/${{CF_REPO_NAME}} /go/src/github.com/${{CF_REPO_OWNER}}/${{CF_REPO_NAME}}
+      # Install pre-requisites and execute tests
+      - cd /go/src/github.com/${{CF_REPO_OWNER}}/${{CF_REPO_NAME}} && go get
+      - cd /go/src/github.com/${{CF_REPO_OWNER}}/${{CF_REPO_NAME}} && go test
+
+  build_artifact:
+    image: golang:latest
+    working_directory: ${{main_clone}}
+    description: Building artifact...
+    commands:
+      # Need to have the source in the correct GOPATH folder - let's do that
+      - mkdir -p /go/src/github.com/${{CF_REPO_OWNER}}
+      - ln -s /codefresh/volume/${{CF_REPO_NAME}} /go/src/github.com/${{CF_REPO_OWNER}}/${{CF_REPO_NAME}}
+      # Install pre-requisites and execute tests
+      - cd /go/src/github.com/${{CF_REPO_OWNER}}/${{CF_REPO_NAME}} && go get
+      - cd /go/src/github.com/${{CF_REPO_OWNER}}/${{CF_REPO_NAME}} && env CGO_ENABLED=0 go build -o entrypoint/entrypoint -a -ldflags '-s' .
+
+  build_image:
+    type: build
+    description: Building the image...
+    working_directory: ${{main_clone}}/entrypoint
+    image_name: ${{CF_REPO_OWNER}}/${{CF_REPO_NAME}}
+    tag: '${{CF_BRANCH}}'
+
+  push_to_registry:
+    title: Pushing to Docker Registry (with credentials)
+    type: push
+    candidate: '${{build_image}}'
+    tag: '${{CF_BRANCH}}'

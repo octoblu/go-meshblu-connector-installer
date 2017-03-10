@@ -1,5 +1,5 @@
-FROM scratch
+FROM centurylink/ca-certs 
 MAINTAINER Octoblu, Inc. <docker@octoblu.com>
 
-ADD meshblu-connector-installer meshblu-connector-installer
-ENTRYPOINT ["./meshblu-connector-installer"]
+ADD entrypoint entrypoint
+ENTRYPOINT ["./entrypoint"]
